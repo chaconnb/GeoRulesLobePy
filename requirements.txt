@@ -1,0 +1,5 @@
+numpy
+scipy
+matplotlib
+pyvista
+ipykernel # used for interactive mode in VSCode
