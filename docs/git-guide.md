@@ -21,6 +21,11 @@ To push changes from local to remote:
 git push
 ```
 
+To pull changes/ update local branch (go to your project in terminal)
+```console
+git fetch; git pull
+```
+
 
 ### Git Workflow
 1. Create a new branch
@@ -37,3 +42,12 @@ git switch my-new-branch
 > **PR merge recommendations**  
 > Use squash-merge when merging PRs
 > Delete the 'my-new-branch' after the merge to keep branches clean
+
+### VSCode Help 
+To open VSCode from the terminal, use: 
+```console 
+code . 
+```
+
+Remember to open the from the `georules` folder so that VSCode can recognize that this is a git repo. 
+(i.e., a folder with a .git directory)
