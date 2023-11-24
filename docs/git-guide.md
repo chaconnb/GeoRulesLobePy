@@ -10,6 +10,15 @@ To add a file or a change to a file.
 ```console
 git add <path/to/file>
 ```
+To add multiple files at the same time
+```console 
+git add file1 file2 file3 
+```
+or to add using a wildcard (*)
+```console 
+git add * 
+```
+> WARNING: This will add everything, should only use if you know what you are doing. 
 
 To commit those changes, and add a comment: 
 ```console
