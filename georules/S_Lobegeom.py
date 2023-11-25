@@ -31,7 +31,6 @@ import math
 # tmax = 2 #m
 # x = [i for i in range(0,lenght, 100)]
 # y_interval = 100
-    
 
 def  drop_geometry(wmax,lenght,tmax,x,y_interval, a1 =0.66, a2 =0.33):
 
@@ -108,8 +107,6 @@ def  drop_geometry(wmax,lenght,tmax,x,y_interval, a1 =0.66, a2 =0.33):
          
     return(lobe_thick)
 
-    
-        
 # =============================================================================
 #  Useful plots: 
 #     
