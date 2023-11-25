@@ -54,6 +54,8 @@ class LobeGeometry:
         self.lenght = length
         self.tmax = tmax
         self.cell_size = cell_size
+        self.scaled_width = width/cell_size
+        self.scaled_length = length/cell_size
 
         self.x_coords = [i for i in range(0, length, cell_size)]
         self.lobe_thickness = self.get_lobe_thickness() 

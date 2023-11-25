@@ -56,10 +56,6 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
 
     n=0 
 
-    # scale lenght and width to cell size
-    lenght_new = lenght/cell_size 
-    wmax_new = width/cell_size
-
     #Create list with centroids
     ls = []
 
@@ -83,7 +79,7 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
             # Select Source Location - centroid (No modification)
             elevation_s = bathymetry.get_elevation(n)
             prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ### Sera necesario tenerlo que trasponer???\
-            prob_s[:,int(lenght_new):int(prob_s.shape[1])] = 0 
+            prob_s[:,int(lobe_geometry.scaled_length):int(prob_s.shape[1])] = 0 
             ps.append(prob_s)
                 
             #normalize prob_s
@@ -102,8 +98,8 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
             
             res = lobe_deposition(
                 Location_,
-                lenght_new,
-                wmax_new,
+                lobe_geometry.scaled_length,
+                lobe_geometry.scaled_width,
                 lobe_geometry.lobe_thickness,
                 rotation_angle,
                 bathymetry,
@@ -147,8 +143,8 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                
                res = lobe_deposition(
                    Location_,
-                   lenght_new,
-                   wmax_new,
+                   lobe_geometry.scaled_length,
+                   lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
                    rotation_angle,
                    bathymetry,
@@ -194,7 +190,7 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                angle2 = quadrant_angles[current_state][1]
                
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(ls, n, wmax_new, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
+               Location_, prob_s, prob_bsm = stacking(ls, n, lobe_geometry.scaled_width, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
                ls.append(Location_),ps.append(prob_bsm)
            
                #Find rotation angle
@@ -203,8 +199,8 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
            
                res = lobe_deposition(
                    Location_,
-                   lenght_new,
-                   wmax_new,
+                   lobe_geometry.scaled_length,
+                   lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
                    rotation_angle, 
                    bathymetry,
