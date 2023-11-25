@@ -25,8 +25,6 @@ output:
 
 """
 import numpy as np
-from S_Lobegeom import drop_geometry
-from S_LobeElement import LobeDepos
 from S_Stacking import stacking
 from S_Markov import stack_forecast
 from S_RotationAngle import rot_angle
@@ -44,7 +42,7 @@ from S_RotationAngle import rot_angle
 #power = 5
 
 # import from refactors
-from lobes import LobeGeometry
+from lobes import LobeGeometry, lobe_deposition
 from bathymetry import BathymetryLayers
 
 
@@ -111,22 +109,20 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
             rotation_angle = rot_angle(Location_,source)
             angle_list.append(rotation_angle) 
             
-            res = LobeDepos(
+            res = lobe_deposition(
                 Location_,
                 lenght_new,
                 wmax_new,
                 lobe_geometry.lobe_thickness,
-                Bathymetry_ini.copy(), 
-                Bathymetry_,
-                nx,
-                ny,
                 rotation_angle,
+                bathymetry,
             )
             Bathymetry_, thick_updated, col_corn, row_corn = res
             
             bathymetry.add_layer(Bathymetry_)
-            print(bathymetry.layers)
-            
+            print("plot layer")
+            fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+            fig.show()
             
             column_corner_list.append(col_corn)
             row_corner_list.append(row_corn)
@@ -158,18 +154,20 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                rotation_angle = rot_angle(Location_,source) 
                angle_list.append(rotation_angle)
                
-               res = LobeDepos(
+               res = lobe_deposition(
                    Location_,
                    lenght_new,
                    wmax_new,
                    lobe_geometry.lobe_thickness,
-                   Bathymetry_ini.copy(),
-                   Bathymetry_,
-                   nx,
-                   ny,
-                   rotation_angle
+                   rotation_angle,
+                   bathymetry,
                 ) 
-               Bathymetry_, thick_updated, col_corn, row_corn = res 
+               Bathymetry_, thick_updated, col_corn, row_corn = res
+               bathymetry.add_layer(Bathymetry_)
+               
+               print("plot layer")
+               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               fig.show()
 
                column_corner_list.append(col_corn)
                row_corner_list.append(row_corn)
@@ -177,7 +175,7 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
            elif current_state == "HF":
                
                #Bathymetry_ = np.transpose(Bathymetry_)
-               Bathymetry_inverse = 1 - Bathymetry_ 
+               Bathymetry_inverse = 1 - bathymetry.layers[-1] 
                min_value = np.min(Bathymetry_inverse)
                max_value = np.max(Bathymetry_inverse)
 
@@ -194,36 +192,45 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                Bathymetry_ = Bathymetry_ + mud_thickness
                ls.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
                
+               # update bathymetry
+               bathymetry.add_layer(Bathymetry_)
+               print("plot layer")
+               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               fig.show()
         
            else:
                angle1 = quadrant_angles[current_state][0]
                angle2 = quadrant_angles[current_state][1]
                
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(ls, n, wmax_new, 0.2, nx, ny, Bathymetry_,power,angle1,angle2) # 0.2 debe ser cambiados por valores de funciones
+               Location_, prob_s, prob_bsm = stacking(ls, n, wmax_new, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
                ls.append(Location_),ps.append(prob_bsm)
            
                #Find rotation angle
                rotation_angle = rot_angle(Location_,source)
                angle_list.append(rotation_angle)
            
-               res = LobeDepos(
+               res = lobe_deposition(
                    Location_,
                    lenght_new,
                    wmax_new,
                    lobe_geometry.lobe_thickness,
-                   Bathymetry_ini.copy(),
-                   Bathymetry_,
-                   nx,
-                   ny,
-                   rotation_angle
+                   rotation_angle, 
+                   bathymetry,
                 )
                Bathymetry_, thick_updated, col_corn, row_corn = res
                
                column_corner_list.append(col_corn)
                row_corner_list.append(row_corn)
-            
-        Bathymetry_steps.append(Bathymetry_.copy())
+
+               # update bathymetry
+               bathymetry.add_layer(Bathymetry_)
+               print("plot layer")
+               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               fig.show()
+
+        # Bathymetry_steps.append(Bathymetry_.copy())
+        Bathymetry_steps = bathymetry.layers.copy()
         
         n = n+1 
         print(n) #track progress
