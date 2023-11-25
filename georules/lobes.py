@@ -1,4 +1,5 @@
-import numpy as np 
+import numpy as np
+import math 
 
 class LobeGeometry:
     a1 = 0.66
