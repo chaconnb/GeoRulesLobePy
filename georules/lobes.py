@@ -1,6 +1,50 @@
 import numpy as np
 import math 
 
+from S_Healing import Healing_Factor
+from S_RotatePaste import rot_paste
+from bathymetry import BathymetryLayers
+
+def lobe_deposition(
+        location:list,
+        length:float,
+        width:float,
+        lobe_array:np.ndarry,
+        angle:float,
+        bathymetry_layers:BathymetryLayers, 
+    ):
+    """Create a new bathymetry layer after a lobe rotation and 'healing' of the lobe.
+
+    Parameters
+    ----------
+    location : list
+        Centroid location.
+    length : float
+        Lenght (maximum) of the lobe.
+    width : float
+        Width (maximum) of the lobe. 
+    lobe_array : np.ndarry
+        Lobe thickness array. 
+    angle : float
+        Angle of rotation in degrees of the lobe w.r.t source.
+    bathymetry_layers : BathymetryLayers
+        Bathymetry layer instance. 
+    """
+    bathymetry_ini = bathymetry_layers.inital_layer.copy() 
+    current_bathymetry = bathymetry_layers.layers[-1]
+    n_x = bathymetry_layers.nx
+    n_y = bathymetry_layers.ny 
+    
+    #Embed a small numpy array (lobe_array) into a predifined block of a large numpy array
+    result = rot_paste(length, width, lobe_array, angle, location, bathymetry_ini)
+    thick_updated, column_corner, row_corner = result 
+    
+    bathymetry_updated = Healing_Factor(n_x, n_y, thick_updated, current_bathymetry)
+    
+    return bathymetry_updated, thick_updated, column_corner, row_corner
+
+
+
 class LobeGeometry:
     a1 = 0.66
     a2 = 0.33
@@ -79,3 +123,5 @@ class LobeGeometry:
         w_x_ = [2 * self.width * (1-i/self.lenght)**b1 * (1 - (1-i/self.lenght)**b1) for i in self.x_coords] 
         w_x_ = np.array(w_x_)
         return w_x_
+
+
