@@ -79,6 +79,11 @@ class MarkovSequence:
             msg = "Please ensure that the transition matrix is of shape (n_states, n_states)" 
             raise ValueError(msg)
 
+        ones = np.ones(len(states))
+        if not all(np.isclose(transition_matrix.sum(axis=1), ones)): 
+            msg = "The probabilities should sum to ~1.0 (over rows)"
+            raise ValueError(msg)
+
 
 if __name__ == '__main__':
     # NOTE: this is probably the most basic "unit-test" one can set up, but its better 
