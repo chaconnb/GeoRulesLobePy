@@ -44,8 +44,32 @@ num_reals = 1
 
 for i in range (0, num_reals): 
     
-    Bathymetry_maps,centoids, prob_maps,quadrants,angle_stack, columns_corner,rows_corner,lobe_image =  Lobe_map(Value_7_nx[i],Value_8_ny[i],Value_6_cellsize[i],Value_2_wmax[i],Value_4_lenght[i],Value_3_tmax[i],Value_5_lobes[i],Value_1_Power[i],
-                                                   Value_9_t_matrix[i],Value_10_start_state[i], Value_11_quadrant_angles[i],Value_12_source[i],Value_13_a1[i],Value_14_a2[i],Value_19_cellsize_z[i],Value_20_n_mud[i])
+    result = Lobe_map(
+        Value_7_nx[i],
+        Value_8_ny[i],
+        Value_6_cellsize[i],
+        Value_2_wmax[i],
+        Value_4_lenght[i],
+        Value_3_tmax[i],
+        Value_5_lobes[i],
+        Value_1_Power[i],
+        Value_9_t_matrix[i],
+        Value_10_start_state[i],
+        Value_11_quadrant_angles[i],
+        Value_12_source[i],
+        Value_19_cellsize_z[i],
+        Value_20_n_mud[i]
+    )
+    (
+        Bathymetry_maps,
+        centoids,
+        prob_maps,
+        quadrants,
+        angle_stack,
+        columns_corner,
+        rows_corner,
+        lobe_image
+    ) = result
         
  
     ## Create 3D Grid  
