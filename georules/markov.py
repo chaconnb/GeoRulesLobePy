@@ -95,9 +95,7 @@ if __name__ == '__main__':
         [0.21,0.13,0.13,0.13,0.28,0.12]
     ])
 
-    lobe_number = 4
-    start_state = "Q1"
-
     foo = MarkovSequence(states=states, transition_matrix=transition_matrix)
-    sequence = foo.get_sequence(4, "Q1")
+    sequence = foo.get_sequence(5, "Q1")
     print(sequence)
+    
