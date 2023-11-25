@@ -45,9 +45,37 @@ from S_RotationAngle import rot_angle
 from lobes import LobeGeometry, lobe_deposition
 from bathymetry import BathymetryLayers
 
+def normalize_probability(prob_s) -> np.ndarray:
+    """Normalize the ##WHAT## Probability.""" 
+    # NOTE: needs better docstring
+    prob_sum = np.sum(prob_s) #prob_s has to be positive
+    norm_prob_s = prob_s/prob_sum
+    return norm_prob_s
 
-def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startstate,quadrant_angles,source,a1,a2,cellsize_z,n_mud):
+def get_norm_elevation(bathymetry:BathymetryLayers, idx:int=None) -> np.ndarray:
+    """Create probability map of the elevations of the mud.""" 
+    idx = -1 if idx is None else idx
+    inv_bath = 1 - bathymetry.layers[idx]
+    norm_elevation = (inv_bath - inv_bath.min())/(inv_bath.max() - inv_bath.min())
+    return norm_elevation
 
+def Lobe_map(
+        nx,
+        ny,
+        cell_size,
+        width,
+        lenght,
+        tmax,
+        num_of_lobes,
+        power,
+        tm,
+        startstate,
+        quadrant_angles,
+        source,
+        cellsize_z,
+        n_mud
+    ):
+    """Lobe Map"""
     # Calculate lobe array with drop geometry
     lobe_geometry = LobeGeometry(width=width,length=lenght, tmax=tmax, cell_size=cell_size)
 
@@ -82,9 +110,8 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
             prob_s[:,int(lobe_geometry.scaled_length):int(prob_s.shape[1])] = 0 
             ps.append(prob_s)
                 
-            #normalize prob_s
-            prob_sum = np.sum(prob_s) #prob_s has to be positive
-            norm_prob_s = prob_s/prob_sum
+            norm_prob_s = normalize_probability(prob_s)
+
             # Use numpy.random.choice to select a flattened index - the centroid- with the specified weights
             index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
             # Convert the flattened index to a row and column index
@@ -126,9 +153,8 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ###Sera necesario tenerlo que trasponer???\
                ps.append(prob_s)
                    
-               #normalize prob_s
-               prob_sum = np.sum(prob_s) #prob_s has to be positive
-               norm_prob_s = prob_s/prob_sum
+               norm_prob_s = normalize_probability(prob_s)
+
                # Use numpy.random.choice to select a flattened index - the centroid- with the specified weights
                index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
                # Convert the flattened index to a row and column index
@@ -161,13 +187,7 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                
            elif current_state == "HF":
                
-               #Bathymetry_ = np.transpose(Bathymetry_)
-               Bathymetry_inverse = 1 - bathymetry.layers[-1] 
-               min_value = np.min(Bathymetry_inverse)
-               max_value = np.max(Bathymetry_inverse)
-
-               #create probability map of the elevations of the mud
-               norm_elevation = (Bathymetry_inverse-min_value)/(max_value-min_value)
+               norm_elevation = get_norm_elevation(bathymetry)
 
                #create an array with mud thickness
                layer_mud_thick = cellsize_z * n_mud
@@ -216,12 +236,27 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
                fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
                fig.show()
 
-        # Bathymetry_steps.append(Bathymetry_.copy())
+        # NOTE: `Bathymetry_steps` was being used as a "Global Variable" :(
         Bathymetry_steps = bathymetry.layers.copy()
         
         n = n+1 
         print(n) #track progress
         
-    return (Bathymetry_steps,ls,ps,stack_list,angle_list,column_corner_list,row_corner_list,lobe_geometry.lobe_thickness) 
+        # prepare output
+        output = (
+            Bathymetry_steps,
+            ls,
+            ps,
+            stack_list,
+            angle_list,
+            column_corner_list,
+            row_corner_list,
+            lobe_geometry.lobe_thickness
+        )
+    return output 
+
+
+
+
 
     
