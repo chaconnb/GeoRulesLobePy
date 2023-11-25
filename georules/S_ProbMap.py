@@ -52,15 +52,6 @@ def Lobe_map(nx, ny,cell_size,width,lenght,tmax,num_of_lobes,power, tm, startsta
     lobe_geometry = LobeGeometry(width=width,length=lenght, tmax=tmax, cell_size=cell_size)
 
     # Set initial bathymetry
-    # zero surface
-    Bathymetry_ini = np.zeros((nx,ny))
-
-
-    # Surface Modeling
-    Bathymetry_ = Bathymetry_ini
-    Bathymetry_steps = []
-    Bathymetry_steps.append(Bathymetry_.copy()) # the first layer is a zero bathymetry layer
-    
     bathymetry = BathymetryLayers(nx, ny)
 
     n=0 

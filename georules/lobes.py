@@ -9,7 +9,7 @@ def lobe_deposition(
         location:list,
         length:float,
         width:float,
-        lobe_array:np.ndarry,
+        lobe_array:np.ndarray,
         angle:float,
         bathymetry_layers:BathymetryLayers, 
     ):
