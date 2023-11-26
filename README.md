@@ -1,7 +1,15 @@
 `georules`
 
 # GeoRules
-
+To run the main code run: 
+1. Activate the `georules` environment
+```console
+conda activate georules
+```
+2. Run the main script
+```console
+python georules/M_LRBM.py
+```
 
 ### Developer Quick Start
 `GeoRules` uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the [Conda documentation](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) for more information. 
