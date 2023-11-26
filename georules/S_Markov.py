@@ -37,8 +37,14 @@ def stack_forecast(start_state,lobe_number,transition_matrix):
     # Choose the starting state
     stacking_angle = start_state
     # Transition Name - combination of differnt states
-    transition_name = [["Q1Q1","Q1Q2","Q1Q3","Q1Q4","Q1NMA","Q1HF"],["Q2Q1","Q2Q2","Q2Q3","Q2Q4","Q2NMA","Q2HF"],["Q3Q1","Q3Q2","Q3Q3","Q3Q4","Q3NMA","Q3HF"],["Q4Q1","Q4Q2","Q4Q3","Q4Q4","Q4NMA","Q4HF"],
-                       ["NMAQ1","NMAQ2","NMAQ3","NMAQ4","NMANMA","NMAHF"],["HFQ1","HFQ2","HFQ3","HFQ4","HFNMA","HFHF"] ]
+    transition_name = [
+        ["Q1Q1","Q1Q2","Q1Q3","Q1Q4","Q1NMA","Q1HF"],
+        ["Q2Q1","Q2Q2","Q2Q3","Q2Q4","Q2NMA","Q2HF"],
+        ["Q3Q1","Q3Q2","Q3Q3","Q3Q4","Q3NMA","Q3HF"],
+        ["Q4Q1","Q4Q2","Q4Q3","Q4Q4","Q4NMA","Q4HF"],
+        ["NMAQ1","NMAQ2","NMAQ3","NMAQ4","NMANMA","NMAHF"],
+        ["HFQ1","HFQ2","HFQ3","HFQ4","HFNMA","HFHF"]
+    ]
     
     # Shall store the sequence of states taken. So, this only has the starting state for now.
     stackingList = [start_state]
