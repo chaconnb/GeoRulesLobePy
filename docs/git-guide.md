@@ -56,6 +56,11 @@ update your local code to match with the changes in the remote repo. To do so, s
 branch you want to update and perform a `git pull` command. 
 
 To pull changes/ update local branch (go to your project in terminal)
+1. Go to main
+```console
+git switch main
+```
+2. Pull all files to local from github
 ```console
 git fetch; git pull
 ```
@@ -73,9 +78,19 @@ git checkout -b 'my-new-branch'
 ```console
 git switch my-new-branch
 ```
-3. Make changes/updates to the code (remember to push changes to the remote branch)
-4. Create a "Pull Request" (PR)
-5. If the PR can be safely merged into the main branch, merge. 
+3. To run code go to folder where the code is:
+  ```console
+cd directory's name
+cd georules
+```
+Write python and file's name:
+  ```console
+python file's name
+python M_LRB.py
+```
+4. Make changes/updates to the code (remember to push changes to the remote branch)
+5. Create a "Pull Request" (PR)
+6. If the PR can be safely merged into the main branch, merge. 
 > **PR merge recommendations**  
 > Use squash-merge when merging PRs
 > Delete the 'my-new-branch' after the merge to keep branches clean
