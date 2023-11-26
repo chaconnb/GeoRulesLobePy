@@ -41,6 +41,11 @@ class MarkovSequence:
             The initial state use to seed the Markov sequence, by default None. If None,
             the initial state is determined from transition matrix. 
         """
+        # sanity check for user input for init state
+        if init_state is not None and init_state not in self.states: 
+            msg = f"{init_state=} was not found in the knowns states: {self.states=}"
+            raise ValueError(msg)
+        
         # set up the initial probability vector
         if init_state is None: 
             p_vec = self.equilibrium_distribution(self.transition_matrix)
