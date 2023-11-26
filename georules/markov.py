@@ -45,8 +45,8 @@ class MarkovSequence:
         if init_state is None: 
             p_vec = self.equilibrium_distribution(self.transition_matrix)
         else: 
-            p_vec = np.zeros(shape=len(states))
-            p_vec[states.index(init_state)] = 1
+            p_vec = np.zeros(shape=len(self.states))
+            p_vec[self.states.index(init_state)] = 1
 
         # init the markov sequence
         initial_state = list(multinomial.rvs(1, p_vec)).index(1)
@@ -90,8 +90,8 @@ if __name__ == '__main__':
     # than nothing. You can test the code by calling the module directly - `python markov.py`
 
     # use example
-    states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
-    transition_matrix = np.array([
+    _states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
+    _transition_matrix = np.array([
         [0.4,0.05,0.4,0.05,0.05,0.05],
         [0.3,0.05,0.25,0.2,0.1,0.1],
         [0.3,0.1,0.3,0.14,0.08,0.08],
@@ -100,7 +100,7 @@ if __name__ == '__main__':
         [0.21,0.13,0.13,0.13,0.28,0.12]
     ])
 
-    foo = MarkovSequence(states=states, transition_matrix=transition_matrix)
+    foo = MarkovSequence(states=_states, transition_matrix=_transition_matrix)
     sequence = foo.get_sequence(5, "Q1")
     print(sequence)
     
