@@ -25,9 +25,10 @@ output:
 
 """
 import numpy as np
-from S_Stacking import stacking
-from S_Markov import stack_forecast
-from S_RotationAngle import rot_angle
+
+from .S_Stacking import stacking
+from .S_Markov import stack_forecast
+from .S_RotationAngle import rot_angle
 
 
 ### Example of parameters
@@ -42,8 +43,8 @@ from S_RotationAngle import rot_angle
 #power = 5
 
 # import from refactors
-from lobes import LobeGeometry, lobe_deposition
-from bathymetry import BathymetryLayers
+from .lobes import LobeGeometry, lobe_deposition
+from .bathymetry import BathymetryLayers
 
 def normalize_probability(prob_s) -> np.ndarray:
     """Normalize the ##WHAT## Probability.""" 

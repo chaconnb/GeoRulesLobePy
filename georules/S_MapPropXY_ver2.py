@@ -7,9 +7,10 @@ This function builds the facies trend in the XY axis. Best quality in the axis.
 """
 
 import numpy as np
-from S_Lobegeom import drop_geometry
-from S_PasteArray import paste
-from S_nonzero_one import convert_nonzero_to_one
+
+from .S_Lobegeom import drop_geometry
+from .S_PasteArray import paste
+from .S_nonzero_one import convert_nonzero_to_one
 
 
 #length = Value_4_lenght[0]

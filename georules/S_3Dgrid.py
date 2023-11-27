@@ -4,11 +4,12 @@ Created on Fri Nov  3 13:23:34 2023
 
 @author: Nataly Chacon-Buitrago
 """
-from S_lobe_facies import grid_lobe
-from S_RotateCoord import rotate_coord
-from V_grid import grid
 import numpy as np
 import math
+
+from .S_lobe_facies import grid_lobe
+from .S_RotateCoord import rotate_coord
+from .visualization.V_grid import grid
 
 
 ### inputs
