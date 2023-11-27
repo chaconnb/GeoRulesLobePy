@@ -7,9 +7,9 @@ Created on Tue Apr 25 14:50:19 2023
 
 
 
-from S_ProbMap import Lobe_map
-from S_3Dgrid import sandbox
-from V_grid import grid
+from georules.S_ProbMap import Lobe_map
+from georules.S_3Dgrid import sandbox
+from georules.visualization.V_grid import grid
 import numpy as np
 import math 
 
