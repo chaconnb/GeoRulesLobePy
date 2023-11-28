@@ -27,6 +27,24 @@ import math
 # n_lobe = Value_5_lobes[0]
 
 
+def get_standard_lobe_coordinates(lobe_length:float, lobe_wmax:float, cell_size:float) -> np.ndarray:
+    """Find coordinates of standard lobe in grid system.
+
+    Parameters
+    ----------
+   lobe_length : float
+       Maximum length lobe.
+   lobe_wmax : float
+       Maximum width lobe.
+   cell_size : float
+       Size of the grid x and y directions. 
+    """
+    coord = []
+    for i in range(int(lobe_length/cell_size)):
+        for j in range(int(lobe_wmax/cell_size)):
+            coord.append([i,j])
+    coord = np.array(coord)
+    return coord
 
 def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
             global_prop,mud_property,n_cell_mud,a1,a2,nx,ny,nz,n_lobe,angle_stack,
@@ -89,16 +107,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
     
     
     #Find coordinates of standard lobe in grid system
-    new_column = lobe_length/cell_size
-    new_row = lobe_wmax/cell_size
-        
-    coord = []
-        
-    for i in range(int(new_column)):
-        for j in range(int(new_row)):
-            coord.append([i,j])
-    
-    coord = np.array(coord)
+    coord = get_standard_lobe_coordinates(lobe_length, lobe_wmax, cell_size)
     
     #Create 3D Lobe
     grid_lobe_normal_mud = grid_lobe(lobe_image,lobe_length,lobe_wmax,
