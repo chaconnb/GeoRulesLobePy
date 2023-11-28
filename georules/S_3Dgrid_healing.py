@@ -46,6 +46,46 @@ def get_standard_lobe_coordinates(lobe_length:float, lobe_wmax:float, cell_size:
     coord = np.array(coord)
     return coord
 
+def verify_range(x_nc_ur,y_nc_ur,x_nc_udr,y_nc_udr,nx,ny):
+    """Function to filter values that are outside the sandbox."""
+    if 0 <= x_nc_ur <= nx-1 and 0 <= y_nc_ur <= ny-1 and 0 <= x_nc_udr <= nx-1  and 0 <= y_nc_udr <= ny-1:
+        return True
+    else:
+        return False
+
+def get_cell_num(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_grid, nz_values):
+    """Get the 'cell_num' array."""
+    result_bath = Bathymetry_maps[n]-Bathymetry_maps[n-1]
+    cell_num = result_bath / cellsize_z
+    cell_num = [[round(element) for element in row] for row in cell_num]
+    cell_num = np.array(cell_num)
+                
+                
+    for i in range(nx):
+        for j in range(ny):
+            for k in range(len(nz_values)):
+                if nz_values[k] <= cellsize_z and cell_num[j,i]!=0 and sandbox_grid[j,i,k]==0:
+                    cells = cell_num[j,i]
+                    for n in range(cells):
+                        sandbox_grid[j,i,k+n]= mud_property+2
+                    cell_num[j,i] = 0
+                                   
+                else:
+                    if k+1 < len(nz_values):
+                        element1 = sandbox_grid[j,i,k]
+                        element2 = sandbox_grid[j,i,k+1]
+                                    
+                        if element1 != 0 and element2 ==0 and cell_num[j,i]!=0:
+                            cells = cell_num[j,i]
+                                        
+                            for n in range(cells):
+                                if k+n < len(nz_values):
+                                    sandbox_grid[j,i,k+n]= mud_property+2
+                                        
+                            cell_num[j,i] = 0
+    return cell_num
+
+
 def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
             global_prop,mud_property,n_cell_mud,a1,a2,nx,ny,nz,n_lobe,angle_stack,
             columns_corner,rows_corner,Bathymetry_maps,quadrants):
@@ -103,16 +143,25 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
     
     #Built standard lobe
     lobe_x =  [i for i in range(0,lobe_length,100)]
-    y_interval = cell_size
-    
     
     #Find coordinates of standard lobe in grid system
     coord = get_standard_lobe_coordinates(lobe_length, lobe_wmax, cell_size)
     
     #Create 3D Lobe
-    grid_lobe_normal_mud = grid_lobe(lobe_image,lobe_length,lobe_wmax,
-                                     cellsize_z,cell_size,lobe_tmax,
-                                     global_prop,mud_property,n_cell_mud,1,a1,a2)
+    grid_lobe_normal_mud = grid_lobe(
+        lobe_thi=lobe_image,
+        length=lobe_length,
+        wmax=lobe_wmax,
+        cellsize_z=cellsize_z,
+        cell_size=cell_size,
+        tmax=lobe_tmax,
+        global_property=global_prop,
+        mud_prop=mud_property,
+        n_cell_mud=n_cell_mud,
+        mud_layer=1,
+        a1=a1,
+        a2=a2,
+    )
     
     #Sandbox_grid
     sandbox_grid = np.zeros((nx,ny,int(nz/cellsize_z)))
@@ -120,20 +169,18 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
     #nz_values - values for z axis
     nz_values = np.linspace(0,nz-cellsize_z,int(nz/cellsize_z))
     
-    ## Function to filter values that are outside the sandbox
-    def verify_range(x_nc_ur,y_nc_ur,x_nc_udr,y_nc_udr,nx,ny):
-          if 0 <= x_nc_ur <= nx-1 and 0 <= y_nc_ur <= ny-1 and 0 <= x_nc_udr <= nx-1  and 0 <= y_nc_udr <= ny-1:
-              return True
-          else:
-              return False
-    
-       
     for n in range(1,n_lobe+1): 
         
         if n == 1:
             print(n)
             
-            new_coord = rotate_coord(coord, angle_stack[n-1], lobe_image,columns_corner[n-1],rows_corner[n-1])
+            new_coord = rotate_coord(
+                coord=coord,
+                angle=angle_stack[n-1],
+                image=lobe_image,
+                column_corner=columns_corner[n-1],
+                row_corner=rows_corner[n-1], 
+            )
             
             for i in range(len(coord)):
                 x_c = coord[i][0]
@@ -147,6 +194,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 
                     
                 if verify_range(x_nc_ur, y_nc_ur, x_nc_udr, y_nc_udr, nx, ny): #### esto se puede cambiar!!!!!
+                    
                     for k in range(int(lobe_tmax/cellsize_z)):
                         if sandbox_grid[y_nc_ur,x_nc_ur,k] == 0:
                             sandbox_grid[y_nc_ur,x_nc_ur,k] =  grid_lobe_normal_mud[x_c,y_c,k]
@@ -164,35 +212,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
             
             if quadrants[n-1] == "HF":
                 print(n)
-                
-                result_bath = Bathymetry_maps[n]-Bathymetry_maps[n-1]
-                cell_num = result_bath / cellsize_z
-                cell_num = [[round(element) for element in row] for row in cell_num]
-                cell_num = np.array(cell_num)
-                
-                
-                for i in range(nx):
-                    for j in range(ny):
-                        for k in range(len(nz_values)):
-                            if nz_values[k] <= cellsize_z and cell_num[j,i]!=0 and sandbox_grid[j,i,k]==0:
-                                cells = cell_num[j,i]
-                                for n in range(cells):
-                                    sandbox_grid[j,i,k+n]= mud_property+2
-                                cell_num[j,i] = 0
-                                   
-                            else:
-                                if k+1 < len(nz_values):
-                                    element1 = sandbox_grid[j,i,k]
-                                    element2 = sandbox_grid[j,i,k+1]
-                                    
-                                    if element1 != 0 and element2 ==0 and cell_num[j,i]!=0:
-                                        cells = cell_num[j,i]
-                                        
-                                        for n in range(cells):
-                                            if k+n < len(nz_values):
-                                                sandbox_grid[j,i,k+n]= mud_property+2
-                                        
-                                        cell_num[j,i] = 0
+                cell_num = get_cell_num(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_grid, nz_values)
         
             else: 
                 print(n)
@@ -203,8 +223,29 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 bath_max = np.max(bath_dif)
 
                 ### Find new lobe with new thickness 
-                lobe_thickness_new = drop_geometry(lobe_wmax,lobe_length,bath_max,lobe_x,y_interval, a1, a2)
-                grid_lobe_new =  grid_lobe(lobe_thickness_new,lobe_length,lobe_wmax,cellsize_z,cell_size,bath_max,global_prop,mud_property,n_cell_mud,0,a1,a2)  
+                lobe_thickness_new = drop_geometry(
+                    wmax=lobe_wmax,
+                    lenght=lobe_length,
+                    tmax=bath_max, 
+                    x=lobe_x,
+                    y_interval=cell_size,
+                    a1=a1,
+                    a2=a2,
+                )
+                grid_lobe_new =  grid_lobe(
+                    lobe_thi=lobe_thickness_new,
+                    length=lobe_length,
+                    wmax=lobe_wmax,
+                    cellsize_z=cellsize_z,
+                    cell_size=cell_size,
+                    tmax=bath_max,
+                    global_property=global_prop,
+                    mud_prop=mud_property,
+                    n_cell_mud=n_cell_mud,
+                    mud_layer=0,
+                    a1=a1,
+                    a2=a2, 
+                )  
 
                 #Find new coordinates - new_coord is equivalent to coord
                 new_coord = rotate_coord(coord,angle_stack[n-1],lobe_image,columns_corner[n-1],rows_corner[n-1])
