@@ -239,11 +239,14 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
         a2=a2,
     )
     
-    for n in range(1,n_lobe+1): 
+    for n in range(1, n_lobe+1): 
         if n == 1:
             print(n)
             # intialize sandbox grid
-            sandbox_grid = intialize_sandbox_grid(lobe_image, cellsize_z, lobe_tmax, nx, ny, nz, angle_stack, columns_corner, rows_corner, coord, grid_lobe_normal_mud, n)
+            sandbox_grid = intialize_sandbox_grid(
+                lobe_image, cellsize_z, lobe_tmax, nx, ny, nz, angle_stack, 
+                columns_corner, rows_corner, coord, grid_lobe_normal_mud, n
+            )
 
         else:
             
@@ -251,22 +254,30 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 print(n)
                 #nz_values - values for z axis
                 nz_values = np.linspace(0, nz-cellsize_z, int(nz/cellsize_z))
-                cell_num = get_cell_num(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_grid, nz_values)
-                
-                # NOTE: It looks like you do not use `cell_num` any where in the code after 
-                # you create it - why do you have it? 
+                cell_num = get_cell_num(n, cellsize_z, mud_property, nx, ny, 
+                                        Bathymetry_maps, sandbox_grid, nz_values
+                )
+                # NOTE: It looks like you do not use `cell_num` any where in the code 
+                # after you create it - why do you have it? 
         
             else: 
                 print(n)
                 
-                bath_dif, lobe_thickness_new, grid_lobe_new = get_new_lobe(lobe_length, lobe_wmax, cell_size, cellsize_z, global_prop, mud_property, n_cell_mud, a1, a2, Bathymetry_maps, n)  
+                bath_dif, lobe_thickness_new, grid_lobe_new = get_new_lobe(
+                    lobe_length, lobe_wmax, cell_size, cellsize_z, global_prop, 
+                    mud_property, n_cell_mud, a1, a2, Bathymetry_maps, n
+                )
 
                 #Find new coordinates - new_coord is equivalent to coord
-                new_coord = rotate_coord(coord, angle_stack[n-1], lobe_image, columns_corner[n-1], rows_corner[n-1])
+                new_coord = rotate_coord(coord, angle_stack[n-1], lobe_image, 
+                    columns_corner[n-1], rows_corner[n-1]
+                )
                 
                 #Filter values that are outside the sandbox
                 #Index of the values inside the sandbox
-                verify_range_new_coord, verify_range_coord = get_verified_coords(nx, ny, coord, new_coord)
+                verify_range_new_coord, verify_range_coord = get_verified_coords(
+                    nx, ny, coord, new_coord
+                )
                 
                 ###create array to verify which coordinates have been filled out
                 fill_out_array = np.zeros((nx,ny))
