@@ -291,7 +291,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                         ### Find where the deposition starts
                          j = np.count_nonzero(sandbox_grid[y_nc_ceil,x_nc_ceil,:])
                 
-                         if sandbox_grid.shape[2]-j >=  grid_lobe_new.shape[2]:     
+                         if sandbox_grid.shape[2]-j >  grid_lobe_new.shape[2]:     
                             sandbox_grid[y_nc_ceil,x_nc_ceil,j:j+ z_cell_number] = grid_lobe_new[x_c,y_c,:z_cell_number] 
                             sandbox_grid[y_nc_ceil,x_nc_ceil,j+ z_cell_number] = mud_property +2 
                         
@@ -308,7 +308,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                         ### Find where the deposition starts
                          j = np.count_nonzero(sandbox_grid[y_nc_floor,x_nc_floor,:])
                 
-                         if sandbox_grid.shape[2]-j >=  grid_lobe_new.shape[2]:     
+                         if sandbox_grid.shape[2]-j > grid_lobe_new.shape[2]:     
                             sandbox_grid[y_nc_floor,x_nc_floor,j:j+ z_cell_number] = grid_lobe_new[x_c,y_c,:z_cell_number] 
                             sandbox_grid[y_nc_floor,x_nc_floor,j+ z_cell_number] = mud_property +2 
                        
@@ -324,7 +324,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                           ### Find where the deposition starts
                            j = np.count_nonzero(sandbox_grid[y_nc_floor,x_nc_ceil,:])
                 
-                           if sandbox_grid.shape[2]-j >=  grid_lobe_new.shape[2]:     
+                           if sandbox_grid.shape[2]-j > grid_lobe_new.shape[2]:     
                               sandbox_grid[y_nc_floor,x_nc_ceil,j:j+ z_cell_number] = grid_lobe_new[x_c,y_c,:z_cell_number] 
                               sandbox_grid[y_nc_floor,x_nc_ceil,j+ z_cell_number] = mud_property +2 
                        
@@ -339,7 +339,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                           ### Find where the deposition starts
                            j = np.count_nonzero(sandbox_grid[y_nc_ceil,x_nc_floor,:])
                 
-                           if sandbox_grid.shape[2]-j >=  grid_lobe_new.shape[2]:     
+                           if sandbox_grid.shape[2]-j > grid_lobe_new.shape[2]:     
                               sandbox_grid[y_nc_ceil,x_nc_floor,j:j+ z_cell_number] = grid_lobe_new[x_c,y_c,:z_cell_number] 
                               sandbox_grid[y_nc_ceil,x_nc_floor,j+ z_cell_number] = mud_property +2 
                       
