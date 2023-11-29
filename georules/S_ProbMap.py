@@ -134,9 +134,10 @@ def Lobe_map(
             Bathymetry_, thick_updated, col_corn, row_corn = res
             
             bathymetry.add_layer(Bathymetry_)
-            print("plot layer")
-            fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-            fig.show()
+            
+            # print("plot layer")
+            # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+            # fig.show()
             
             column_corner_list.append(col_corn)
             row_corner_list.append(row_corn)
@@ -178,9 +179,9 @@ def Lobe_map(
                Bathymetry_, thick_updated, col_corn, row_corn = res
                bathymetry.add_layer(Bathymetry_)
                
-               print("plot layer")
-               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               fig.show()
+               # print("plot layer")
+               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               # fig.show()
 
                column_corner_list.append(col_corn)
                row_corner_list.append(row_corn)
@@ -201,9 +202,10 @@ def Lobe_map(
                
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
-               print("plot layer")
-               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               fig.show()
+               
+               # print("plot layer")
+               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               # fig.show()
         
            else:
                angle1 = quadrant_angles[current_state][0]
@@ -232,9 +234,10 @@ def Lobe_map(
 
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
-               print("plot layer")
-               fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               fig.show()
+               
+               # print("plot layer")
+               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
+               # fig.show()
 
         # NOTE: `Bathymetry_steps` was being used as a "Global Variable" :(
         Bathymetry_steps = bathymetry.layers.copy()
