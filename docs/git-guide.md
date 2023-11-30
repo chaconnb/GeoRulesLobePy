@@ -69,11 +69,11 @@ git fetch; git pull
 ```
 
 
-## Git Workflow
+## Git Workflow I
 These steps describe a simple git workflow. You can see a visualization of the workflow
 in the `./workflow-git.pdf`. 
 
-1. Create a new branch
+1. Create a new branch 
 ```console
 git checkout -b 'my-new-branch' 
 ```
@@ -97,6 +97,19 @@ python M_LRB.py
 > **PR merge recommendations**  
 > Use squash-merge when merging PRs
 > Delete the 'my-new-branch' after the merge to keep branches clean
+>
+
+## Git Workflow II - create new branch on local machine
+
+1. Update Main
+```console
+git switch Main
+git  fetch
+git pull
+```
+2. Create new banch (steps 1 and 2 from Git Workflow I)
+3. Suggestion: Create PR to track changes! 
+   
 
 ## VSCode Help 
 To open VSCode from the terminal, use: 
