@@ -1,6 +1,7 @@
 from scipy.stats import multinomial
 from typing import List, Tuple 
 import numpy as np
+import warnings
 
 class MarkovSequence:
     """A Markov sequence generator class.
@@ -41,12 +42,17 @@ class MarkovSequence:
             The initial state use to seed the Markov sequence, by default None. If None,
             the initial state is determined from transition matrix. 
         """
+        # sanity check for user input for init state
+        if init_state is not None and init_state not in self.states: 
+            msg = f"{init_state=} was not found in the knowns states: {self.states=}"
+            raise ValueError(msg)
+        
         # set up the initial probability vector
         if init_state is None: 
             p_vec = self.equilibrium_distribution(self.transition_matrix)
         else: 
-            p_vec = np.zeros(shape=len(states))
-            p_vec[states.index(init_state)] = 1
+            p_vec = np.zeros(shape=len(self.states))
+            p_vec[self.states.index(init_state)] = 1
 
         # init the markov sequence
         initial_state = list(multinomial.rvs(1, p_vec)).index(1)
@@ -85,13 +91,28 @@ class MarkovSequence:
             raise ValueError(msg)
 
 
+class DummyMarkovSequence(MarkovSequence): 
+
+    def __init__(self, states: List[str], transition_matrix: np.ndarray) -> None:
+        super().__init__(states, transition_matrix)
+        warnings.warn("WARNING: You are using a dummy markov sequence which is non-stocastic.")
+    
+    def get_sequence(self, sequence_len: int, init_state: str = None) -> Tuple[str, ...]:
+        sequence = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
+        if len(sequence) < sequence_len: 
+            sequence = sequence + ["Q1"] * (sequence_len - len(sequence))
+        elif len(sequence) > sequence_len: 
+            sequence = sequence[:sequence_len]
+        return sequence
+
+
 if __name__ == '__main__':
     # NOTE: this is probably the most basic "unit-test" one can set up, but its better 
     # than nothing. You can test the code by calling the module directly - `python markov.py`
 
     # use example
-    states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
-    transition_matrix = np.array([
+    _states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
+    _transition_matrix = np.array([
         [0.4,0.05,0.4,0.05,0.05,0.05],
         [0.3,0.05,0.25,0.2,0.1,0.1],
         [0.3,0.1,0.3,0.14,0.08,0.08],
@@ -100,7 +121,14 @@ if __name__ == '__main__':
         [0.21,0.13,0.13,0.13,0.28,0.12]
     ])
 
-    foo = MarkovSequence(states=states, transition_matrix=transition_matrix)
+    foo = MarkovSequence(states=_states, transition_matrix=_transition_matrix)
     sequence = foo.get_sequence(5, "Q1")
     print(sequence)
     
+    # how to use dummy markov class 
+    bar = DummyMarkovSequence(states=_states, transition_matrix=_transition_matrix)
+    sequence = bar.get_sequence(8)
+    print(sequence)
+
+
+
