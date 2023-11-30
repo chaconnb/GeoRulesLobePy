@@ -165,6 +165,70 @@ def get_verified_coords(nx, ny, coord, new_coord):
     verify_range_coord = coord[verify_range_index]
     return verify_range_new_coord,verify_range_coord
 
+def get_deposition_start(
+        sandbox_grid,
+        mud_property,
+        grid_lobe_new,
+        x,
+        y,
+        y_ref,
+        x_ref,
+        z):
+    
+    j = np.count_nonzero(sandbox_grid[y_ref,x_ref,:])            
+    if sandbox_grid.shape[2]-j > grid_lobe_new.shape[2]:     
+       sandbox_grid[y_ref,x_ref,j:j+ z] = grid_lobe_new[x,y,:z] 
+       sandbox_grid[y_ref,x_ref,j+ z] = mud_property +2 
+                      
+    else:
+        sandbox_grid[y_ref,x_ref,j:] = grid_lobe_new[x,y,:sandbox_grid.shape[2]-j]
+    return sandbox_grid
+
+def new_func(sandbox_grid, cellsize_z, mud_property, bath_dif, lobe_thickness_new, grid_lobe_new, fill_out_array, x_c, y_c, x_nc_ceil, y_nc_ceil, x_nc_floor, y_nc_floor):
+    if bath_dif[y_nc_ceil][x_nc_ceil]> 0.0001 and fill_out_array[y_nc_ceil][x_nc_ceil] == 0:
+       fill_out_array[y_nc_ceil][x_nc_ceil] = 1
+                
+                        ### Find where the deposition starts
+       z_cell_number = round(lobe_thickness_new[y_c, x_c]/cellsize_z) 
+       sandbox_grid = get_deposition_start(
+                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
+                            y_nc_ceil, x_nc_ceil, z_cell_number, 
+                        )
+                          
+    if bath_dif[y_nc_floor][x_nc_floor]> 0.0001 and fill_out_array[y_nc_floor][x_nc_floor] == 0:
+       fill_out_array[y_nc_floor][x_nc_floor] = 1
+
+                        ### Find where the deposition starts
+       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
+       sandbox_grid = get_deposition_start(
+                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
+                            y_nc_floor, x_nc_floor, z_cell_number, 
+                        )
+                   
+    if bath_dif[y_nc_floor][x_nc_ceil]> 0.0001 and fill_out_array[y_nc_floor][x_nc_ceil] == 0:
+       fill_out_array[y_nc_floor][x_nc_ceil] = 1
+                
+                        ### Find where the deposition starts
+       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
+       sandbox_grid = get_deposition_start(
+                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
+                            y_nc_floor, x_nc_ceil, z_cell_number, 
+                        )
+                   
+    if bath_dif[y_nc_ceil][x_nc_floor]> 0.0001 and fill_out_array[y_nc_ceil][x_nc_floor] == 0:
+       fill_out_array[y_nc_ceil][x_nc_floor] = 1
+                        
+                        ### Find where the deposition starts
+       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
+       sandbox_grid = get_deposition_start(
+                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
+                            y_nc_ceil, x_nc_floor, z_cell_number, 
+                        )
+       
+    return sandbox_grid
+
+
+
 def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
             global_prop,mud_property,n_cell_mud,a1,a2,nx,ny,nz,n_lobe,angle_stack,
             columns_corner,rows_corner,Bathymetry_maps,quadrants):
@@ -219,6 +283,8 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
    sandboxgrid : array
        3D grid of lobes with facies.
    """
+   
+   
 
     #Find coordinates of standard lobe in grid system
     coord = get_standard_lobe_coordinates(lobe_length, lobe_wmax, cell_size)
@@ -301,67 +367,9 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
     
     return(sandbox_grid)
 
-def new_func(sandbox_grid, cellsize_z, mud_property, bath_dif, lobe_thickness_new, grid_lobe_new, fill_out_array, x_c, y_c, x_nc_ceil, y_nc_ceil, x_nc_floor, y_nc_floor):
-    if bath_dif[y_nc_ceil][x_nc_ceil]> 0.0001 and fill_out_array[y_nc_ceil][x_nc_ceil] == 0:
-       fill_out_array[y_nc_ceil][x_nc_ceil] = 1
-                
-                        ### Find where the deposition starts
-       z_cell_number = round(lobe_thickness_new[y_c, x_c]/cellsize_z) 
-       sandbox_grid = get_deposition_start(
-                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
-                            y_nc_ceil, x_nc_ceil, z_cell_number, 
-                        )
-                          
-    if bath_dif[y_nc_floor][x_nc_floor]> 0.0001 and fill_out_array[y_nc_floor][x_nc_floor] == 0:
-       fill_out_array[y_nc_floor][x_nc_floor] = 1
 
-                        ### Find where the deposition starts
-       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
-       sandbox_grid = get_deposition_start(
-                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
-                            y_nc_floor, x_nc_floor, z_cell_number, 
-                        )
-                   
-    if bath_dif[y_nc_floor][x_nc_ceil]> 0.0001 and fill_out_array[y_nc_floor][x_nc_ceil] == 0:
-       fill_out_array[y_nc_floor][x_nc_ceil] = 1
-                
-                        ### Find where the deposition starts
-       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
-       sandbox_grid = get_deposition_start(
-                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
-                            y_nc_floor, x_nc_ceil, z_cell_number, 
-                        )
-                   
-    if bath_dif[y_nc_ceil][x_nc_floor]> 0.0001 and fill_out_array[y_nc_ceil][x_nc_floor] == 0:
-       fill_out_array[y_nc_ceil][x_nc_floor] = 1
-                        
-                        ### Find where the deposition starts
-       z_cell_number = round(lobe_thickness_new[y_c,x_c]/cellsize_z) 
-       sandbox_grid = get_deposition_start(
-                            sandbox_grid, mud_property, grid_lobe_new, x_c, y_c, 
-                            y_nc_ceil, x_nc_floor, z_cell_number, 
-                        )
-       
-    return sandbox_grid
 
-def get_deposition_start(
-        sandbox_grid,
-        mud_property,
-        grid_lobe_new,
-        x,
-        y,
-        y_ref,
-        x_ref,
-        z):
-    
-    j = np.count_nonzero(sandbox_grid[y_ref,x_ref,:])            
-    if sandbox_grid.shape[2]-j >=  grid_lobe_new.shape[2]:     
-       sandbox_grid[y_ref,x_ref,j:j+ z] = grid_lobe_new[x,y,:z] 
-       sandbox_grid[y_ref,x_ref,j+ z] = mud_property +2 
-                      
-    else:
-        sandbox_grid[y_ref,x_ref,j:] = grid_lobe_new[x,y,:sandbox_grid.shape[2]-j]
-    return sandbox_grid
+
 
 
 
