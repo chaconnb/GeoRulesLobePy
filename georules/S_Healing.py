@@ -3,7 +3,7 @@
 Created on Mon Mar 13 12:32:02 2023
 
 @author: Nataly Chacon-Buitrago 
-This function helps to smooth the lobes when there is overlaping
+This function helps smooth the lobes when there is overlaping
 """
 
 import numpy as np
@@ -42,9 +42,5 @@ def Healing_Factor(nx, ny, thick_update, bathymetry):
     bathymetry_updated = bathymetry+ thick_updated_
 
 
-
-    # # No Healing Factor
-    
-    #bathymetry_updated = bathymetry + thick_update
     
     return(bathymetry_updated)
