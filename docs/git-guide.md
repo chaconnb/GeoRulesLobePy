@@ -21,7 +21,10 @@ Some branch commands:
 - `git branch -D <branch-name` : delete the specified branch
 - `git switch <branch-name>`: switch to the target branch
 
-To create a new branch use the `git checkout -b` command. This will create a new branch and switch to the current branch. 
+To create a new branch use the `git checkout -b` command. This will create a new branch and switch to the current branch.
+
+IMPORTANT: To create a branch from the main, go first to the main and create the branch. 
+           To create a branch from a branch, go to the branch you want to create the branch from and create the branch. 
 ```console
 git checkout -b "my-new-branch" 
 ```
