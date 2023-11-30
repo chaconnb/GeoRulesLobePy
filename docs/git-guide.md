@@ -104,7 +104,7 @@ python M_LRB.py
 1. Update Main
 ```console
 git switch Main
-git  fetch
+git fetch
 git pull
 ```
 2. Create new banch (steps 1 and 2 from Git Workflow I)
