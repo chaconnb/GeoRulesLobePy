@@ -53,7 +53,7 @@ def verify_range(x_nc_ur,y_nc_ur,x_nc_udr,y_nc_udr,nx,ny):
     else:
         return False
 
-def get_cell_num(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_grid, nz_values):
+def add_mud_layer(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_grid, nz_values):
     """Get the 'cell_num' array."""
     result_bath = Bathymetry_maps[n]-Bathymetry_maps[n-1]
     cell_num = result_bath / cellsize_z
@@ -83,7 +83,7 @@ def get_cell_num(n, cellsize_z, mud_property, nx, ny, Bathymetry_maps, sandbox_g
                                     sandbox_grid[j,i,k+n]= mud_property+2
                                         
                             cell_num[j,i] = 0
-    return cell_num
+    return cell_num, sandbox_grid
 
 def get_initial_sandbox(sandbox_grid, cellsize_z, lobe_tmax, nx, ny, grid_lobe_normal_mud, new_coord, i, x_c, y_c) -> np.ndarray:
     """Update sandbox grid."""
@@ -254,7 +254,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 print(n)
                 #nz_values - values for z axis
                 nz_values = np.linspace(0, nz-cellsize_z, int(nz/cellsize_z))
-                cell_num = get_cell_num(n, cellsize_z, mud_property, nx, ny, 
+                cell_num, sandbox_grid = add_mud_layer(n, cellsize_z, mud_property, nx, ny, 
                                         Bathymetry_maps, sandbox_grid, nz_values
                 )
                 # NOTE: It looks like you do not use `cell_num` any where in the code 
