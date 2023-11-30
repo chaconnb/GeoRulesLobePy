@@ -1,6 +1,7 @@
 from scipy.stats import multinomial
 from typing import List, Tuple 
 import numpy as np
+import warnings
 
 class MarkovSequence:
     """A Markov sequence generator class.
@@ -90,6 +91,21 @@ class MarkovSequence:
             raise ValueError(msg)
 
 
+class DummyMarkovSequence(MarkovSequence): 
+
+    def __init__(self, states: List[str], transition_matrix: np.ndarray) -> None:
+        super().__init__(states, transition_matrix)
+        warnings.warn("WARNING: You are using a dummy markov sequence which is non-stocastic.")
+    
+    def get_sequence(self, sequence_len: int, init_state: str = None) -> Tuple[str, ...]:
+        sequence = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
+        if len(sequence) < sequence_len: 
+            sequence = sequence + ["Q1"] * (sequence_len - len(sequence))
+        elif len(sequence) > sequence_len: 
+            sequence = sequence[:sequence_len]
+        return sequence
+
+
 if __name__ == '__main__':
     # NOTE: this is probably the most basic "unit-test" one can set up, but its better 
     # than nothing. You can test the code by calling the module directly - `python markov.py`
@@ -109,3 +125,10 @@ if __name__ == '__main__':
     sequence = foo.get_sequence(5, "Q1")
     print(sequence)
     
+    # how to use dummy markov class 
+    bar = DummyMarkovSequence(states=_states, transition_matrix=_transition_matrix)
+    sequence = bar.get_sequence(8)
+    print(sequence)
+
+
+
