@@ -3,7 +3,7 @@
 Created on Mon Mar 13 12:32:02 2023
 
 @author: Nataly Chacon-Buitrago 
-This function helps to smooth the lobes when there is overlaping
+This function helps smooth the lobes when there is overlaping
 """
 
 import numpy as np

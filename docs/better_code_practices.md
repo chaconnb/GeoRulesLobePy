@@ -107,3 +107,35 @@ An example is worth a thousand words: (see https://numpydoc.readthedocs.io/en/la
 
 ### Line lenghts: 
 Limit all lines to a maximum of 79 characters.
+### Classes: 
+class Square: 
+    
+    def __init__(self, lenght, width):
+        self.length = length
+        self.width = width
+        self.area = lenght * width
+
+    
+from dataclass import dataclass
+
+
+
+square = Square(3, 4)
+bob = Square(3,4)
+square.area 
+
+def get_area(length, width): 
+    return length * width
+
+def get_special_area(shape,u):
+    """get area from a Square instancec."""
+    return shape.area + u
+
+def get_area(shape:Square): 
+    l = shape.lenght 
+    w = shape.width 
+    area = l * w 
+    return area
+
+get_special_area(bob,9)
+
