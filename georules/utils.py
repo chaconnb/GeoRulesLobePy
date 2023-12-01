@@ -8,6 +8,10 @@ def save_bath_as_array(filename:Path, foldername:Path, bath_map:List[np.ndarray]
     """Serialize a list of bathymetry arrays into a 3D array.""" 
     _array = np.stack(bath_map)
     np.save(os.path.join(foldername,filename), _array)
+    
+def save_array(filename:Path, foldername:Path,_array:np.ndarray) -> None:
+    """Serialize a list of bathymetry arrays into a 3D array.""" 
+    np.save(os.path.join(foldername,filename), _array)
 
 def load_bath_binary(filename:Path) -> np.ndarray:
     """Load a serialized bathymetry."""
