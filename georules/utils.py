@@ -2,12 +2,12 @@ from pathlib import Path
 from typing import List
 import numpy as np 
 import json
+import os
 
-def save_bath_as_array(filename:Path, bath_map:List[np.ndarray]) -> None:
+def save_bath_as_array(filename:Path, foldername:Path, bath_map:List[np.ndarray]) -> None:
     """Serialize a list of bathymetry arrays into a 3D array.""" 
     _array = np.stack(bath_map)
-    with open(filename, 'wb') as fh: 
-        np.save(fh, _array)
+    np.save(os.path.join(foldername,filename), _array)
 
 def load_bath_binary(filename:Path) -> np.ndarray:
     """Load a serialized bathymetry."""
@@ -16,10 +16,13 @@ def load_bath_binary(filename:Path) -> np.ndarray:
     return res
 
 
-def save_list_as_json(filename:Path,_list) -> None:
-    """Saves a list like a json file"""
-    with open(filename, "w") as fh:
-        json.dump(filename,fh)
+def save_list_as_json(filename:Path, foldername:Path, _list) -> None:
+    """Saves a list as a JSON file in a specific folder."""
+    folder_path = Path(foldername)
+    file_path = folder_path / (filename +".json")
+    with open(file_path, "w") as fh:
+        json.dump(_list, fh)
+
 
 def load_list_json(filename:Path) -> list:
     """ Load list from json file"""
