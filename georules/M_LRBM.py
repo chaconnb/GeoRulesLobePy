@@ -8,9 +8,12 @@ Created on Tue Apr 25 14:50:19 2023
 
 
 from S_ProbMap import Lobe_map
+from variance_bathymetry import varinace_bathymetry_maps
+from utils import save_bath_as_array
 from S_3Dgrid_healing import sandbox
 from V_grid import grid
 import numpy as np
+import os
 import math 
 
 ## Reservoir Parameter Setting
@@ -39,8 +42,12 @@ Value_20_n_mud = [2] #number of cells mud that covers lobe
 Value_21_mud_property = [0.18] #property mud
 
 
-num_reals = 1
+num_tests = 300
+n = 1
 
+
+
+num_reals = 1
 
 for i in range (0, num_reals): 
     
@@ -72,16 +79,23 @@ for i in range (0, num_reals):
     ) = result
         
  
+    ##Calculates Variance of thicknesses in bathymetry maps
+    
+    variance_thickness = varinace_bathymetry_maps(Bathymetry_maps)
+    
+    #Turn list of bathymetry maps to arrays and save array to a file
+
+    save_bath_as_array("test_bathy{}".format(n),Bathymetry_maps)
+    
+    
     ## Create 3D Grid  
     
-    nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
-    sandbox_grid = sandbox(Value_4_lenght[0],Value_2_wmax[0],Value_6_cellsize[0],lobe_image,Value_19_cellsize_z[0],Value_3_tmax[0],Value_15_gp[0],Value_21_mud_property[0],
-     Value_20_n_mud[0],Value_13_a1[0],Value_14_a2[0],Value_7_nx[0],Value_8_ny[0],nz,Value_5_lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
+    #nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
+    #sandbox_grid = sandbox(Value_4_lenght[0],Value_2_wmax[0],Value_6_cellsize[0],lobe_image,Value_19_cellsize_z[0],Value_3_tmax[0],Value_15_gp[0],Value_21_mud_property[0],
+     #Value_20_n_mud[0],Value_13_a1[0],Value_14_a2[0],Value_7_nx[0],Value_8_ny[0],nz,Value_5_lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
 
     ## Visualize 
-    grid(sandbox_grid,1,1,1,plot_slices=True, slice_x=40, slice_y=30, slice_z=2) #change depending on desired type of visualization 
-    
-    
+    #grid(sandbox_grid,1,1,1,plot_slices=True, slice_x=40, slice_y=30, slice_z=2) #change depending on desired type of visualization 
     
     
     
