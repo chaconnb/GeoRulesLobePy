@@ -5,13 +5,13 @@ Created on Tue Apr 25 14:50:19 2023
 @author: Nataly Chacon-Buitrago
 """
 
+# visualization
 
-
-from S_ProbMap import Lobe_map
-from variance_bathymetry import varinace_bathymetry_maps
-from utils import save_bath_as_array
-from S_3Dgrid_healing import sandbox
-from V_grid import grid
+from georules.S_ProbMap import Lobe_map
+from georules.variance_bathymetry import varinace_bathymetry_maps
+from georules.utils import save_bath_as_array
+from georules.S_3Dgrid_healing import sandbox
+from georules.V_grid import grid
 import numpy as np
 import os
 import math 
