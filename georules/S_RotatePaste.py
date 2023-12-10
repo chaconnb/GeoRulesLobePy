@@ -6,8 +6,8 @@ Created on Thu Apr 27 15:51:23 2023
 Rotate+Paste
 """
 import numpy as np
-from S_PasteArray import paste
-from S_RotateArray import rot
+from georules.S_PasteArray import paste
+from georules.S_RotateArray import rot
 
 
 

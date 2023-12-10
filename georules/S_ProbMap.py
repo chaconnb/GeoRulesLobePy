@@ -25,10 +25,12 @@ output:
 
 """
 import numpy as np
-from S_Stacking import stacking
-from S_Markov import stack_forecast
-from S_RotationAngle import rot_angle
-
+from georules.S_Stacking import stacking
+from georules.S_Markov import stack_forecast
+from georules.S_RotationAngle import rot_angle
+# import from refactors
+from georules.lobes import LobeGeometry, lobe_deposition
+from georules.bathymetry import BathymetryLayers
 
 ### Example of parameters
 
@@ -40,10 +42,6 @@ from S_RotationAngle import rot_angle
 #tmax = 2 
 #num_of_lobes = 10  
 #power = 5
-
-# import from refactors
-from lobes import LobeGeometry, lobe_deposition
-from bathymetry import BathymetryLayers
 
 def normalize_probability(prob_s) -> np.ndarray:
     """Normalize the ##WHAT## Probability.""" 
@@ -257,9 +255,3 @@ def Lobe_map(
             lobe_geometry.lobe_thickness
         )
     return output 
-
-
-
-
-
-    
