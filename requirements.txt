@@ -1,5 +1,5 @@
 numpy
 scipy
 matplotlib
-pyvista
+pyvista==0.42.2
 ipykernel # used for interactive mode in VSCode
