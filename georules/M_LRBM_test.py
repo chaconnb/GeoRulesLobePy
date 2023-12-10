@@ -11,18 +11,20 @@ from S_ProbMap import Lobe_map
 from bathymetry import  varinace_bathymetry_maps
 from utils import save_bath_as_array
 from utils import save_list_as_json
+from utils import save_centroids
+from utils import save_array
 from S_3Dgrid_healing import sandbox
 from V_grid import grid
-import numpy as np
-import os
-import math 
+
+
+
 
 ## Reservoir Parameter Setting
 Value_1_Power=[5]
 Value_2_wmax=[15000] #m
 Value_3_tmax=[2] #m
 Value_4_lenght =[30000] #m 
-Value_5_lobes = [10] #number of lobes
+Value_5_lobes = [40] #number of lobes
 Value_6_cellsize = [100] #cell size
 Value_7_nx = [250]
 Value_8_ny = [250]
@@ -43,10 +45,11 @@ Value_20_n_mud = [2] #number of cells mud that covers lobe
 Value_21_mud_property = [0.18] #property mud
 
 
-num_tests = 3
-n = 1
+num_tests = 300
+n = 0
 
 while n < num_tests: 
+    print("test number",n)
     
 
     num_reals = 1
@@ -82,20 +85,22 @@ while n < num_tests:
             
      
         ##Calculates Variance of thicknesses in bathymetry maps
-        
         variance_thickness = varinace_bathymetry_maps(Bathymetry_maps)
         
+        #
+        save_array("variance_thickness{}".format(n),"surface_variance",variance_thickness)
+        
         #Turn list of bathymetry maps to arrays and save array to a file
-        save_bath_as_array("bathy_array{}".format(n),"results", Bathymetry_maps)
+        save_bath_as_array("bathy_array{}".format(n),"3d_grid_inputs", Bathymetry_maps)
+        
+        #save centroids
+        save_centroids("centroids{}".format(n),"centroids", centoids)
         
         #Save lists as json files
-        save_list_as_json("angle_stack{}".format(n),"results", angle_stack)
-        
-        save_list_as_json("columns_corner{}".format(n),"results", columns_corner)
-        
-        save_list_as_json("rows_corner{}".format(n),"results", rows_corner)
-        
-        save_list_as_json("quadrants{}".format(n),"results", quadrants)
+        save_list_as_json("angle_stack{}".format(n),"3d_grid_inputs", angle_stack)
+        save_list_as_json("columns_corner{}".format(n),"3d_grid_inputs", columns_corner)
+        save_list_as_json("rows_corner{}".format(n),"3d_grid_inputs", rows_corner)
+        save_list_as_json("quadrants{}".format(n),"3d_grid_inputs", quadrants)
         
         ## Create 3D Grid  
         
