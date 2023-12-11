@@ -3,13 +3,13 @@
 Created on Thu Dec  7 16:50:46 2023
 
 @author: Nataly Chacon-Buitrago 
-This code plots the number of lobes on the x-axis and the variance on the y-axis.
+This code plots the number of lobes on the x-axis and the surface variance on the y-axis.
 The surface variance is loaded from the data obtained during the test,
 and P10, P25, P50, P85, and P90 are calculated and plotted.
 """
 
 import matplotlib.pyplot as plt
-from utils import load_bath_binary
+from utils import load_array
 import numpy as np
 
 
@@ -26,7 +26,7 @@ array_variances_percentiles = np.zeros((n_lobes+1,n_test+5))
 
 for n in range(n_test): 
 
-    variance_bathymetry =  load_bath_binary("variance_thickness{}.npy".format(n),"surface_variance")
+    variance_bathymetry =  load_array("variance_thickness{}".format(n),"surface_variance")
     array_variances_percentiles[:,n] = variance_bathymetry
     
     
@@ -74,7 +74,12 @@ plt.legend()
 plt.savefig("surface_variance_percentiles.png", format="png", dpi=1200)
 plt.show()
 
-    
+
+
+
+
+
+
     
 
 
