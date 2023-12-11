@@ -10,7 +10,7 @@ Clone the repository to local.
 ```console
 git clone git@github.com:chaconnb/georules.git
 ```
-### Setting up a local repo for windows+ spider
+### Setting up a local repo for windows + spider
 1. Open Git Bash.
 2. Create a folder where you want to start your repository.
 3. Go to github ->  serach for your repository -> go to <>code (Green button top right corner.) -> Go to HTTPS -> copy your repository's website. In this case:
@@ -121,7 +121,17 @@ git fetch
 git pull
 ```
 2. Create new banch (steps 1 and 2 from Git Workflow I)
-3. Suggestion: Create PR to track changes! 
+3. Suggestion: Create PR to track changes!
+
+## Delete a file from a Git repository 
+1. If we want to delete a file and also delete it from local file system:
+```console
+git rm unwanted-file.txt
+```
+2. If we want only to delete the file without also deleting it from our local filesystem:
+```console
+git rm --cached unwanted-file.txt
+```
    
 
 ## VSCode Help 
