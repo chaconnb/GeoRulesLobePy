@@ -2,7 +2,10 @@
 """
 Created on Fri Dec  8 12:20:09 2023
 
-@author: nc25884
+@author: Nataly Chacon Buitrago
+
+Calculate the lag angle between centroids and plot the angles for all lobes and
+realizations in a polar bar plot
 """
 
 
@@ -11,14 +14,11 @@ import numpy as np
 from numpy import linalg as LA
 from utils import load_array
 
-#input
-n_test = 300
-grid_center = np.array([Value_7_nx[0]/2, Value_8_ny[0]/2]) 
 
 ##functions
 def angle_between(center_arc, start_pointarc, end_pointard):
     
-    """Calculate angle between two vectors in counterclockwise direction (ccw) .
+    """Calculates angle between two vectors in counterclockwise direction (ccw) .
        
        Parameters
        ----------  
@@ -53,6 +53,12 @@ def angle_between(center_arc, start_pointarc, end_pointard):
     return (deg)
 
 
+#input (change input)
+n_test = 300 # number of tests
+grid_center = np.array([Value_7_nx[0]/2, Value_8_ny[0]/2]) 
+
+
+#Data prep
 # Find the angles at which centroids move.
 angles = []
 
