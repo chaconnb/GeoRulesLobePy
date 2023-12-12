@@ -44,9 +44,11 @@ def save_list_as_json(filename:Path, foldername:Path, _list) -> None:
         json.dump(_list, fh)
 
 
-def load_list_json(filename:Path) -> list:
+def load_list_json(filename:Path, foldername:Path) -> list:
     """ Load list from json file"""
-    with open(filename, "r") as file:
+    folder_path = Path(foldername)
+    file_path = folder_path / (filename +".json")
+    with open(file_path, "r") as file:
         loaded_list = json.load(file)
         return(loaded_list)
 
