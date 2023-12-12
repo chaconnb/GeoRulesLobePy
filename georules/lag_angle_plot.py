@@ -13,7 +13,7 @@ from utils import load_array
 
 #input
 n_test = 300
-grid_center = np.array([Value_7_nx[0]/2, Value_8_ny[0]/2])
+grid_center = np.array([Value_7_nx[0]/2, Value_8_ny[0]/2]) 
 
 ##functions
 def angle_between(center_arc, start_pointarc, end_pointard):
@@ -78,8 +78,8 @@ for n in range(n_test):
         angles.append(angle_between(grid_center,a, b))
     
     
-# =============================================================================
-# #polar bar plot - prep
+
+# polar bar plot - prep
 # 
 theta = np.linspace(0,360,36)
 # Create pais in the theta using list comprehension
@@ -112,6 +112,7 @@ pairlist_mean = np.radians(pairlist_mean)
 angle_counts = np.array(angle_counts)
 
 
+#plot polar bar plot
 
 # Get an axes handle/object
 ax1 = plt.subplot(projection ="polar")
@@ -123,6 +124,7 @@ bars = ax1.bar(x = pairlist_mean, height= angle_counts,
         bottom=0.0,
         alpha=0.5,
         edgecolor='k')
+
 # Radius limits
 #ax1.set_ylim(0,np.max(angle_counts))
 # Radius ticks
