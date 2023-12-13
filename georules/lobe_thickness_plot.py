@@ -63,12 +63,18 @@ for n in range(n_test):
                 lobe_thickness_realizations[i,n] = lobe_max_thickness(bathymetry_array[i-1,:,:],bathymetry_array[i,:,:])
                 
 
-# Replace zeros with nan
+# Replace zeros with the mean of each column (lobe)
 lobe_thickness_nan = np.where(lobe_thickness_realizations == 0, np.nan, lobe_thickness_realizations)
-#create a list of lists with the thickneses for the  n_lobes for the n_test realizations.
-lobe_thickness_list = [row.tolist() for row in lobe_thickness_nan]
+# Calculate the mean of each column excluding NaN values
+col_means = np.nanmean(lobe_thickness_nan, axis=0)
+# Replace zeros with the mean of each column
+lobe_thickness_no_zeros = np.where(lobe_thickness_realizations == 0, col_means, lobe_thickness_realizations)
+
+
+# #create a list of lists with the thickneses for the  n_lobes for the n_test realizations.
+lobe_thickness_list = [row.tolist() for row in lobe_thickness_no_zeros ]
                 
-#boxplot
+##boxplot
 
 labels = list(map(str, range(1, n_lobes+1)))
 
@@ -86,6 +92,10 @@ plt.show()
 
 
              
+
+
+
+
     
        
      
