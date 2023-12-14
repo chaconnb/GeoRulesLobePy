@@ -132,7 +132,8 @@ git rm unwanted-file.txt
 ```console
 git rm --cached unwanted-file.txt
 ```
-   
+## Basic writting and formating syntax
+Visit the [Github docs](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 
 ## VSCode Help 
 To open VSCode from the terminal, use: 
