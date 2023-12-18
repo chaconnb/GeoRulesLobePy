@@ -81,7 +81,6 @@ git switch main
 git fetch; git pull
 ```
 
-
 ## Git Workflow I
 These steps describe a simple git workflow. You can see a visualization of the workflow
 in the `./workflow-git.pdf`. 
@@ -138,6 +137,8 @@ Visit the [Github docs](https://docs.github.com/en/get-started/writing-on-github
 ```console
 mkdir <Folder Name>
 ```
+## Nice emojis 🧐
+https://www.webfx.com/tools/emoji-cheat-sheet/
 
 ## VSCode Help 
 To open VSCode from the terminal, use: 
