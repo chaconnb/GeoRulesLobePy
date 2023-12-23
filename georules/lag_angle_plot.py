@@ -5,7 +5,8 @@ Created on Fri Dec  8 12:20:09 2023
 @author: Nataly Chacon Buitrago
 
 Calculate the lag angle between centroids and plot the angles for all lobes and
-realizations in a polar bar plot
+realizations in a polar bar plot.
+Lag angle : azimuth of the plane formed by centroid(n) and centroid(n+1)
 """
 
 
@@ -18,20 +19,20 @@ from utils import load_array
 ##functions
 def angle_between(center_arc, start_pointarc, end_pointard):
     
-    """Calculates angle between two vectors in counterclockwise direction (ccw) .
+    """Calculates angle between two vectors in clockwise direction (cw) .
        
-       Parameters
-       ----------  
-       center_arc: np.ndarray
-       Coordinate joining the endpoints of the arc with the center of the circle.  
-       start_pointarc: np.ndarray
-       Coordinate where the angle will start being measured.
-       start_pointarc: np.ndarray
-       The coordinate where the angle will cease to be measured.
+        Parameters
+        ----------  
+        center_arc: np.ndarray[row,column]
+        Coordinate joining the endpoints of the arc with the center of the circle.  
+        start_pointarc: np.ndarray[row,column]
+        Coordinate where the angle will start being measured.
+        start_pointarc: np.ndarray[row,column]
+        The coordinate where the angle will cease to be measured.
        
-       Returns
-       -------
-       angle : float 
+        Returns
+        -------
+        angle : float 
             
 
     """
@@ -55,8 +56,6 @@ def angle_between(center_arc, start_pointarc, end_pointard):
 
 #input (change input)
 n_test = 300 # number of tests
-grid_center = np.array([Value_7_nx[0]/2, Value_8_ny[0]/2]) 
-
 
 #Data prep
 # Find the angles at which centroids move.
@@ -80,11 +79,10 @@ for n in range(n_test):
     for i in range(len(centroids)-1):
         a = centroids[i]
         b = centroids[i+1]
+        start_coordinate = np.array([Value_7_nx[0],a[1]])
         
-        angles.append(angle_between(grid_center,a, b))
+        angles.append(angle_between(a, start_coordinate,b))
     
-    
-
 # polar bar plot - prep
 # 
 theta = np.linspace(0,360,36)
@@ -141,8 +139,7 @@ plt.grid(True)
 #plt.title("Polar Bar Plots")
 
 plt.savefig("lag_angle_plot.png", format="png", dpi=1200)
-plt.show()
-    
+plt.show()  
 
 
 
