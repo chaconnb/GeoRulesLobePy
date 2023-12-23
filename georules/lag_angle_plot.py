@@ -83,17 +83,18 @@ for n in range(n_test):
         
         angles.append(angle_between(a, start_coordinate,b))
     
+
 # polar bar plot - prep
 # 
-theta = np.linspace(0,360,36)
+theta = np.linspace(0,360,37)
 # Create pais in the theta using list comprehension
-theta_pairlist = [[theta[i], theta[i + 1]] for i in range(0, len(theta), 2)]
+theta_pairlist = [[theta[i], theta[i + 1]] for i in range(0, len(theta)-1)]
     
-#Convert lists to numpy arrays for easier manipulation
+# #Convert lists to numpy arrays for easier manipulation
 angles_array = np.array(angles)
 intervals_array = np.array(theta_pairlist)
 
-#Initialize a list to store the count of angles in each interval
+# #Initialize a list to store the count of angles in each interval
 angle_counts = [] 
  
 for interval in intervals_array:
@@ -107,7 +108,7 @@ for interval in intervals_array:
     angle_counts.append(count)
     
       
-#calculate the mean of each pair to be able to plot it 
+# #calculate the mean of each pair to be able to plot it 
 pairlist_mean = [int(sum(pair) / len(pair)) for pair in theta_pairlist]
 
 #transform the pairlist_mean from degrees to radians
@@ -116,7 +117,7 @@ pairlist_mean = np.radians(pairlist_mean)
 angle_counts = np.array(angle_counts)
 
 
-#plot polar bar plot
+# #plot polar bar plot
 
 # Get an axes handle/object
 ax1 = plt.subplot(projection ="polar")
@@ -140,6 +141,8 @@ plt.grid(True)
 
 plt.savefig("lag_angle_plot.png", format="png", dpi=1200)
 plt.show()  
+
+
 
 
 
