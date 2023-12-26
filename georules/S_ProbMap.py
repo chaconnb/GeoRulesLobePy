@@ -101,9 +101,10 @@ def Lobe_map(
     row_corner_list = []
     
 
+    # Lobe placement
     while n < num_of_lobes: 
+        # intialize lobe 
         if n == 0:
-            #Lobe Placement
             # Select Source Location - centroid (No modification)
             elevation_s = bathymetry.get_elevation(n)
             prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ### Sera necesario tenerlo que trasponer???\
@@ -143,7 +144,6 @@ def Lobe_map(
             row_corner_list.append(row_corn)
         
         else: 
-           
            # select stacking angles depending on current state
            current_state = stack_list[n] # according to Markov Chain
            
@@ -161,7 +161,7 @@ def Lobe_map(
                # Convert the flattened index to a row and column index
                a, b = divmod(index, elevation_s.shape[1])
                Location_ = [a,b] #location of the centroid a = column , b = row
-               centroid_coords.append(Location_)  
+               centroid_coords.append(Location_)  # ?
                 
                
                #Find rotation angle
@@ -208,11 +208,23 @@ def Lobe_map(
                # fig.show()
         
            else:
+               # Add (i.e., stack) a new lobe (???)
                angle1 = quadrant_angles[current_state][0]
                angle2 = quadrant_angles[current_state][1]
                
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(centroid_coords, n, lobe_geometry.scaled_width, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
+               Location_, prob_s, prob_bsm = stacking(
+                   centroid_coords=centroid_coords,
+                   n=n, 
+                   lobe_radius=lobe_geometry.scaled_width,
+                   search_radius=0.2,
+                   nx=nx,
+                   ny=ny,
+                   bathymetry_layer=bathymetry.layers[-1],
+                   power=power,
+                   angle_move1=angle1,
+                   angle_move2=angle2,
+                ) # 0.2 debe ser cambiados por valores de funciones
                centroid_coords.append(Location_),ps.append(prob_bsm)
            
                #Find rotation angle

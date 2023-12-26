@@ -15,7 +15,18 @@ search_radius : the proportion to multiply the current lobe radius to find how m
 """
 import numpy as np
 
-def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,power, angle_move1, angle_move2):
+def stacking(
+        centroid_coords, 
+        n,
+        lobe_radius,
+        search_radius,
+        nx,
+        ny,
+        bathymetry_layer,
+        power, 
+        angle_move1,
+        angle_move2,
+    ):
     
     if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
          #Find area to move the lobe
@@ -23,14 +34,14 @@ def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,
     else:
         centroid = centroid_coords[n-1]
             
-    rad_int = Loberadius + Loberadius*0.00002
+    rad_int = lobe_radius + lobe_radius * 0.00002
      
     #Create the circular mask
 
-    circular_mask1= np.zeros((n_x,n_y))
+    circular_mask1= np.zeros((nx,ny))
 
-    for i in range(0,n_x):
-        for j in range(0,n_y):
+    for i in range(0,nx):
+        for j in range(0,ny):
             dis_centroid = (j - centroid[0])**2 + (i-centroid[1])**2# distance from the point(x,y) to the centroid
                  
             if dis_centroid< rad_int**2:
@@ -38,10 +49,10 @@ def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,
                     
     #find angles from the centroid
          
-    ang_rad2 = np.zeros((n_x,n_y))
+    ang_rad2 = np.zeros((nx,ny))
 
-    for i in range(0,n_x):
-        for j in range(0,n_y):
+    for i in range(0,nx):
+        for j in range(0,ny):
                 ang_rad2[i,j]= np.arctan2((i-centroid[1]),(j-centroid[0])) #find the angle from the centroid -radians-
                 
     ang_degrees2 = np.rad2deg(ang_rad2) #Find the angle from the centroid -degrees-
@@ -51,10 +62,10 @@ def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,
     #angle mask
                     
     #1 if it is inside angle_move1 and angle_move2:
-    ang_mask1 = np.zeros((n_x,n_y)) #mask to determine where the lobe is going to move based on the angles
+    ang_mask1 = np.zeros((nx,ny)) #mask to determine where the lobe is going to move based on the angles
 
-    for i in range(0,n_x):
-        for j in range(0,n_y):
+    for i in range(0,nx):
+        for j in range(0,ny):
             angle = ang_degrees2[i][j]
             if angle_move1 < angle_move2:
                 if angle_move1 <= angle <= angle_move2:
@@ -66,23 +77,23 @@ def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,
                     ang_mask1[i][j] = 1
                         
     # # overlap circle mask  ang angle mask
-    moving_mask1 = np.zeros((n_x,n_y))
+    moving_mask1 = np.zeros((nx,ny))
 
-    for i in range(0,n_x):
-        for j in range(0,n_y):
+    for i in range(0,nx):
+        for j in range(0,ny):
             if ang_mask1[i][j] ==circular_mask1[i][j] and ang_mask1[i][j] == 1 and circular_mask1[i][j] == 1:
                 moving_mask1[i][j] = 1
                     
     #Find Probabilities
-    elevation_s = (Bathymetry_ - np.min(Bathymetry_))/(np.max(Bathymetry_)+0.0001)+0.0001
+    elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
     prob_s_b = 1-elevation_s
     #prob_s_b is the probability map before  the mask 
     prob_s1 = prob_s_b.copy() #create deep copy
 
     #Filter probabilities inside the area of interest
 
-    for i in range(0,n_x):
-        for j in range(0,n_y):
+    for i in range(0,nx):
+        for j in range(0,ny):
             if moving_mask1[i,j] == 0:
                 prob_s1[i,j]=0 
      
