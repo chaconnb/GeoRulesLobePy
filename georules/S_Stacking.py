@@ -1,15 +1,21 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sun Mar 19 11:16:23 2023
-
 @author: Nataly Chacon-Buitrago
-                                                                                                                                                                                                                                                                                                                                                                    
 """
+from ast import List
+from typing import Tuple
 import numpy as np
 
-
-def stacking(centroid, n, lobe_radius, nx, ny, bathymetry_layer, angle_move1, angle_move2):
-    
+def stacking(
+        centroid:list,
+        n:int,
+        lobe_radius:float,
+        nx:int,
+        ny:int,
+        bathymetry_layer:np.ndarray,
+        angle_move1:int,
+        angle_move2:int, 
+    ) -> Tuple[List[float], np.ndarray]:
     """Function to stack n+1 lobe depending on the position of lobe n. 
        The stacking pattern depends on the state of the markov chain. 
        
@@ -34,13 +40,10 @@ def stacking(centroid, n, lobe_radius, nx, ny, bathymetry_layer, angle_move1, an
     -------
     lobe_location:list
         Centroid's coordiantes for next lobe.
-    prob_s_b: np.array 
+    centroid_probability_map: np.array 
         Probability map for finding new centroid. Topographic highs have low 
         probabilities and topographic lows have high probabilities. 
-    
     """
-    
-    
     rad_int = lobe_radius + lobe_radius * 0.00002
      
     #Create the circular mask
@@ -48,23 +51,20 @@ def stacking(centroid, n, lobe_radius, nx, ny, bathymetry_layer, angle_move1, an
                     
     #Find Probabilities
     elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
-    prob_s_b = 1-elevation_s
-    #prob_s_b is the probability map before  the mask 
-    prob_s = prob_s_b.copy() #create deep copy
+    centroid_probability_map = 1-elevation_s # probability map before the mask 
+    prob_s = centroid_probability_map.copy() 
 
     #Filter probabilities inside the area of interest
-
-    for i in range(0,nx):
-        for j in range(0,ny):
-            if moving_mask[i,j] == 0:
-                prob_s[i,j]=0 
+    for i in range(0, nx):
+        for j in range(0, ny):
+            if moving_mask[i, j] == 0:
+                prob_s[i, j] = 0 
                 
+    prob_s = np.where(prob_s > 0, prob_s,0) # filter negative probabilities
+    norm_prob_s = prob_s/np.sum(prob_s)
     
-    prob_s = np.where(prob_s > 0, prob_s,0)#filter negative probabilities
-    prob_sum = np.sum(prob_s) #prob_s has to be positive
-    norm_prob_s = prob_s/prob_sum
+    # Convert the flattened index to a column and row index
     index = np.random.choice(norm_prob_s.size, p=norm_prob_s.flatten())
-    # # Convert the flattened index to a column and row index
     a,b = divmod(index, norm_prob_s.shape[1])
    
     if moving_mask[a,b] != 1.0: 
@@ -72,7 +72,7 @@ def stacking(centroid, n, lobe_radius, nx, ny, bathymetry_layer, angle_move1, an
 
     lobe_location = [b,a] #location of the centroid, I had to swap the positions of 'a' and 'b' to make it work.
     
-    return(lobe_location, prob_s_b)
+    return lobe_location, centroid_probability_map 
 
 def get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int):
     
@@ -133,7 +133,6 @@ def get_angle_mask(nx, ny, angle_move1, angle_move2, centroid_angles):
                     mask[i][j] = 1
     return mask
 
-
 def get_overlap_mask(nx, ny, circle_mask, angle_mask):
     "Overlaps angle_mask and circle_mask to create a mask between the angles and length from the centroid of interest."
     mask = np.zeros((nx,ny))
@@ -143,10 +142,4 @@ def get_overlap_mask(nx, ny, circle_mask, angle_mask):
             if angle_mask[i][j] ==circle_mask[i][j] and angle_mask[i][j] == 1 and angle_mask[i][j] == 1:
                 mask[i][j] = 1
     return mask
-
-
-
-
-
-
                             
