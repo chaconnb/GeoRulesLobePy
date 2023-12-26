@@ -43,26 +43,27 @@ def stacking(
     elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
     prob_s_b = 1-elevation_s
     #prob_s_b is the probability map before  the mask 
-    prob_s1 = prob_s_b.copy() #create deep copy
+    prob_s = prob_s_b.copy() #create deep copy
 
     #Filter probabilities inside the area of interest
 
     for i in range(0,nx):
         for j in range(0,ny):
             if moving_mask[i,j] == 0:
-                prob_s1[i,j]=0 
+                prob_s[i,j]=0 
      
     
     prob_s = np.where(prob_s > 0, prob_s,0)#filter negative probabilities
     prob_sum = np.sum(prob_s) #prob_s has to be positive
     norm_prob_s = prob_s/prob_sum
     index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
+    
     # # Convert the flattened index to a row and column index
     a, b = divmod(index, elevation_s.shape[1])
-    Location1_ = [a,b] #location of the centroid
+    lobe_location = [a,b] #location of the centroid
     
     
-    return(Location1_, prob_s1, prob_s_b)
+    return(lobe_location, prob_s, prob_s_b)
 
 def get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int):
     
