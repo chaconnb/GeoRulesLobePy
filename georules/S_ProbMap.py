@@ -118,15 +118,15 @@ def Lobe_map(
             index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
             # Convert the flattened index to a row and column index
             a, b = divmod(index, elevation_s.shape[1])
-            Location_ = [a,b] #location of the centroid a = column , b = row
-            centroid_coords.append(Location_)
+            lobe_location = [a,b] #location of the centroid a = column , b = row
+            centroid_coords.append(lobe_location)
             
             #Find rotation angle
-            rotation_angle = rot_angle(Location_,source)
+            rotation_angle = rot_angle(lobe_location,source)
             angle_list.append(rotation_angle) 
             
             res = lobe_deposition(
-                Location_,
+                lobe_location,
                 lobe_geometry.scaled_length,
                 lobe_geometry.scaled_width,
                 lobe_geometry.lobe_thickness,
@@ -161,16 +161,16 @@ def Lobe_map(
                index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
                # Convert the flattened index to a row and column index
                a, b = divmod(index, elevation_s.shape[1])
-               Location_ = [a,b] #location of the centroid a = column , b = row
-               centroid_coords.append(Location_)  # ?
+               lobe_location = [a,b] #location of the centroid a = column , b = row
+               centroid_coords.append(lobe_location)  # ?
                 
                
                #Find rotation angle
-               rotation_angle = rot_angle(Location_,source) 
+               rotation_angle = rot_angle(lobe_location,source) 
                angle_list.append(rotation_angle)
                
                res = lobe_deposition(
-                   Location_,
+                   lobe_location,
                    lobe_geometry.scaled_length,
                    lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
@@ -214,7 +214,7 @@ def Lobe_map(
                angle2 = quadrant_angles[current_state][1]
                
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(
+               lobe_location, prob_s, prob_bsm = stacking(
                    centroid_coords=centroid_coords,
                    n=n, 
                    lobe_radius=lobe_geometry.scaled_width,
@@ -226,14 +226,15 @@ def Lobe_map(
                    angle_move1=angle1,
                    angle_move2=angle2,
                 ) # 0.2 debe ser cambiados por valores de funciones
-               centroid_coords.append(Location_),ps.append(prob_bsm)
+               centroid_coords.append(lobe_location)
+               ps.append(prob_bsm)
            
                #Find rotation angle
-               rotation_angle = rot_angle(Location_,source)
+               rotation_angle = rot_angle(lobe_location,source)
                angle_list.append(rotation_angle)
            
                res = lobe_deposition(
-                   Location_,
+                   lobe_location,
                    lobe_geometry.scaled_length,
                    lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
