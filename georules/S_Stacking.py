@@ -52,16 +52,7 @@ def stacking(
     #Find Probabilities
     elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
     centroid_probability_map = 1-elevation_s # probability map before the mask 
-    prob_s = centroid_probability_map.copy() 
-
-    #Filter probabilities inside the area of interest
-    for i in range(0, nx):
-        for j in range(0, ny):
-            if moving_mask[i, j] == 0:
-                prob_s[i, j] = 0 
-                
-    prob_s = np.where(prob_s > 0, prob_s,0) # filter negative probabilities
-    norm_prob_s = prob_s/np.sum(prob_s)
+    norm_prob_s = get_normalized_proobability(nx, ny, moving_mask, centroid_probability_map)
     
     # Convert the flattened index to a column and row index
     index = np.random.choice(norm_prob_s.size, p=norm_prob_s.flatten())
@@ -73,6 +64,17 @@ def stacking(
     lobe_location = [b,a] #location of the centroid, I had to swap the positions of 'a' and 'b' to make it work.
     
     return lobe_location, centroid_probability_map 
+
+def get_normalized_proobability(nx, ny, moving_mask, centroid_probability_map):
+    prob_s = centroid_probability_map.copy() 
+    for i in range(0, nx):
+        for j in range(0, ny):
+            if moving_mask[i, j] == 0:
+                prob_s[i, j] = 0 
+                
+    prob_s = np.where(prob_s > 0, prob_s,0) # filter negative probabilities
+    norm_prob_s = prob_s/np.sum(prob_s)
+    return norm_prob_s
 
 def get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int):
     
