@@ -38,14 +38,14 @@ def stacking(
      
     #Create the circular mask
 
-    circular_mask1= np.zeros((nx,ny))
+    circular_mask= np.zeros((nx,ny))
 
     for i in range(0,nx):
         for j in range(0,ny):
             dis_centroid = (j - centroid[0])**2 + (i-centroid[1])**2# distance from the point(x,y) to the centroid
                  
             if dis_centroid< rad_int**2:
-                circular_mask1[i,j]= 1
+                circular_mask[i,j]= 1
                     
     #find angles from the centroid
          
@@ -62,40 +62,40 @@ def stacking(
     #angle mask
                     
     #1 if it is inside angle_move1 and angle_move2:
-    ang_mask1 = np.zeros((nx,ny)) #mask to determine where the lobe is going to move based on the angles
+    ang_mask = np.zeros((nx,ny)) #mask to determine where the lobe is going to move based on the angles
 
     for i in range(0,nx):
         for j in range(0,ny):
             angle = ang_degrees2[i][j]
             if angle_move1 < angle_move2:
                 if angle_move1 <= angle <= angle_move2:
-                    ang_mask1[i][j]=1
+                    ang_mask[i][j]=1
             else:
                 if 0 <= angle <= angle_move2:
-                    ang_mask1[i][j]=1
+                    ang_mask[i][j]=1
                 elif angle_move1 <= angle<= 360:
-                    ang_mask1[i][j] = 1
+                    ang_mask[i][j] = 1
                         
     # # overlap circle mask  ang angle mask
-    moving_mask1 = np.zeros((nx,ny))
+    moving_mask = np.zeros((nx,ny))
 
     for i in range(0,nx):
         for j in range(0,ny):
-            if ang_mask1[i][j] ==circular_mask1[i][j] and ang_mask1[i][j] == 1 and circular_mask1[i][j] == 1:
-                moving_mask1[i][j] = 1
+            if ang_mask[i][j] ==circular_mask[i][j] and ang_mask[i][j] == 1 and circular_mask[i][j] == 1:
+                moving_mask[i][j] = 1
                     
     #Find Probabilities
     elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
     prob_s_b = 1-elevation_s
     #prob_s_b is the probability map before  the mask 
-    prob_s1 = prob_s_b.copy() #create deep copy
+    prob_s = prob_s_b.copy() #create deep copy
 
     #Filter probabilities inside the area of interest
 
     for i in range(0,nx):
         for j in range(0,ny):
-            if moving_mask1[i,j] == 0:
-                prob_s1[i,j]=0 
+            if moving_mask[i,j] == 0:
+                prob_s[i,j]=0 
      
     
     prob_s = np.where(prob_s > 0, prob_s,0)#filter negative probabilities
@@ -104,10 +104,10 @@ def stacking(
     index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
     # # Convert the flattened index to a row and column index
     a, b = divmod(index, elevation_s.shape[1])
-    Location1_ = [a,b] #location of the centroid
+    Location_ = [a,b] #location of the centroid
     
     
-    return(Location1_, prob_s1, prob_s_b)
+    return(Location_, prob_s, prob_s_b)
     
             
                 
