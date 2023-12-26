@@ -24,23 +24,11 @@ output:
     lobe_array = array of the lobe of interest useful for gridding see S_rotate_coord (equivalent to image)
 
 """
-import random
 import numpy as np
 from S_Stacking import stacking
 from S_Markov import stack_forecast
 from S_RotationAngle import rot_angle
 
-
-### Example of parameters
-
-#nx = 400 
-#ny = 400 
-#cell_size = 100 
-#width = 15000 
-#lenght = 30000 
-#tmax = 2 
-#num_of_lobes = 10  
-#power = 5
 
 # import from refactors
 from lobes import LobeGeometry, lobe_deposition
@@ -93,7 +81,6 @@ def Lobe_map(
 
     # Use markov-chains to find stacking patterns
     stack_list = stack_forecast(startstate, num_of_lobes, tm) # function inputs start state ="Q1"
-    stack_list = ['Q2', 'Q3', 'Q3', 'Q4', "Q4"] # NOTE: pinning this variable for debugging (delete later)
     print(stack_list)
     #source= channel
     
@@ -108,7 +95,6 @@ def Lobe_map(
         # intialize lobe 
         if n == 0:
             a, b = np.random.randint(0, nx), np.random.randint(0, ny)
-            print(a,b)
             lobe_location = [a,b] #location of the centroid a = column , b = row
             centroid_coords.append(lobe_location)
             
@@ -200,20 +186,26 @@ def Lobe_map(
                # fig.show()
         
            else:
-               # Add (i.e., stack) a new lobe (???)
+               # Angles where new centroid should go
                angle1 = quadrant_angles[current_state][0]
                angle2 = quadrant_angles[current_state][1]
                
+               #centroid coords
+               if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
+                    #Find area to move the lobe
+                   centroid = centroid_coords[n-2]
+               else:
+                   centroid = centroid_coords[n-1]
+               
+               
                # Stacking 
-               lobe_location, prob_s, prob_bsm = stacking(
-                   centroid_coords=centroid_coords,
+               lobe_location, prob_bsm = stacking(
+                   centroid=centroid,
                    n=n, 
                    lobe_radius=lobe_geometry.scaled_width,
-                   search_radius=0.2,
                    nx=nx,
                    ny=ny,
                    bathymetry_layer=bathymetry.layers[-1],
-                   power=power,
                    angle_move1=angle1,
                    angle_move2=angle2,
                 ) # 0.2 debe ser cambiados por valores de funciones
