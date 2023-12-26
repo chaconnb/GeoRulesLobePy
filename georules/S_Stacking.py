@@ -8,32 +8,36 @@ Function to stack n+1 lobe depending on the position of lobe n.                 
 Input:                                                                                                            |
 angle_move1 and angle_move_2 : give the range of movement of the lobe whith respect to those two angles. 90 ----- | ----- 270
                               The range of movement will go from angle_move1 to angle_move2                       |
-                                                                                                                 180
-search_radius : the proportion to multiply the current lobe radius to find how much the n+1 will move
-               radius of movement from centroid= lobe radius + search_proportion*lobe radius                                                                                                               
+                                                                                                                 180                                                                                                              
 
 """
 import numpy as np
+import matplotlib.pyplot as plt 
+
 
 def stacking(
-        centroid_coords, 
+        centroid, 
         n,
         lobe_radius,
-        search_radius,
         nx,
         ny,
         bathymetry_layer,
-        power, 
         angle_move1,
         angle_move2,
     ):
     
-    if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
-         #Find area to move the lobe
-        centroid = centroid_coords[n-2]
-    else:
-        centroid = centroid_coords[n-1]
-            
+    
+    ###check : plot bathymetry layer and centroid
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_title(n)
+    plt.imshow(bathymetry_layer)
+    plt.scatter(centroid[0],centroid[1])
+    plt.colorbar()
+    plt.show()
+    ####
+    
+    
     rad_int = lobe_radius + lobe_radius * 0.00002
      
     #Create the circular mask
@@ -51,19 +55,31 @@ def stacking(
         for j in range(0,ny):
             if moving_mask[i,j] == 0:
                 prob_s[i,j]=0 
-     
+                
     
     prob_s = np.where(prob_s > 0, prob_s,0)#filter negative probabilities
     prob_sum = np.sum(prob_s) #prob_s has to be positive
     norm_prob_s = prob_s/prob_sum
-    index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
-    
-    # # Convert the flattened index to a row and column index
-    a, b = divmod(index, elevation_s.shape[1])
+    index = np.random.choice(norm_prob_s.size, p=norm_prob_s.flatten())
+    # # Convert the flattened index to a column and row index
+    a,b = divmod(index, norm_prob_s.shape[1])
+   
     if moving_mask[a,b] != 1.0: 
         raise ValueError('Lobe coordinates are not in the correct quadrant.')
 
-    lobe_location = [a,b] #location of the centroid
+    lobe_location = [b,a] #location of the centroid
+
+    
+    ###check : plot mask with probabilities
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_title("angle 1: {}  angle 2: {}".format(angle_move1, angle_move2))
+    plt.imshow(norm_prob_s)
+    plt.scatter(centroid[0],centroid[1])
+    plt.scatter(b,a)
+    plt.colorbar()
+    plt.show()
+    ####
     
     
     return(lobe_location, prob_s, prob_s_b)
