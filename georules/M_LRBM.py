@@ -21,7 +21,7 @@ Value_1_Power=[5]
 Value_2_wmax=[15000] #m
 Value_3_tmax=[2] #m
 Value_4_lenght =[30000] #m 
-Value_5_lobes = [10] #number of lobes
+Value_5_lobes = [5] #number of lobes
 Value_6_cellsize = [100] #cell size
 Value_7_nx = [250]
 Value_8_ny = [250]
@@ -77,16 +77,7 @@ for i in range (0, num_reals):
         rows_corner,
         lobe_image
     ) = result
-        
- 
-    ##Calculates Variance of thicknesses in bathymetry maps
-    
-    variance_thickness = varinace_bathymetry_maps(Bathymetry_maps)
-    
-    #Turn list of bathymetry maps to arrays and save array to a file
-
-    save_bath_as_array("test_bathy{}".format(n),Bathymetry_maps)
-    
+           
     
     ## Create 3D Grid  
     
