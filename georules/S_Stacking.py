@@ -60,6 +60,9 @@ def stacking(
     
     # # Convert the flattened index to a row and column index
     a, b = divmod(index, elevation_s.shape[1])
+    if moving_mask[a,b] != 1.0: 
+        raise ValueError('Lobe coordinates are not in the correct quadrant.')
+
     lobe_location = [a,b] #location of the centroid
     
     
