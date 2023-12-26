@@ -24,6 +24,7 @@ output:
     lobe_array = array of the lobe of interest useful for gridding see S_rotate_coord (equivalent to image)
 
 """
+import random
 import numpy as np
 from S_Stacking import stacking
 from S_Markov import stack_forecast
@@ -106,18 +107,8 @@ def Lobe_map(
     while n < num_of_lobes: 
         # intialize lobe 
         if n == 0:
-            # Select Source Location - centroid (No modification)
-            elevation_s = bathymetry.get_elevation(n)
-            prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ### Sera necesario tenerlo que trasponer???\
-            prob_s[:,int(lobe_geometry.scaled_length):int(prob_s.shape[1])] = 0 
-            ps.append(prob_s)
-                
-            norm_prob_s = normalize_probability(prob_s)
-
-            # Use numpy.random.choice to select a flattened index - the centroid- with the specified weights
-            index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
-            # Convert the flattened index to a row and column index
-            a, b = divmod(index, elevation_s.shape[1])
+            a, b = np.random.randint(0, nx), np.random.randint(0, ny)
+            print(a,b)
             lobe_location = [a,b] #location of the centroid a = column , b = row
             centroid_coords.append(lobe_location)
             
