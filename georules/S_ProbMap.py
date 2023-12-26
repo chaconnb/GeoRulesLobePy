@@ -113,7 +113,7 @@ def Lobe_map(
             centroid_coords.append(lobe_location)
             
             #Find rotation angle
-            rotation_angle = rot_angle(lobe_location,source)
+            rotation_angle = rot_angle(lobe_location, source)
             angle_list.append(rotation_angle) 
             
             res = lobe_deposition(
@@ -152,12 +152,12 @@ def Lobe_map(
                index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
                # Convert the flattened index to a row and column index
                a, b = divmod(index, elevation_s.shape[1])
-               lobe_location = [a,b] #location of the centroid a = column , b = row
+               lobe_location = [a, b] #location of the centroid a = column , b = row
                centroid_coords.append(lobe_location)  # ?
                 
                
                #Find rotation angle
-               rotation_angle = rot_angle(lobe_location,source) 
+               rotation_angle = rot_angle(lobe_location, source) 
                angle_list.append(rotation_angle)
                
                res = lobe_deposition(
