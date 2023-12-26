@@ -15,13 +15,13 @@ search_radius : the proportion to multiply the current lobe radius to find how m
 """
 import numpy as np
 
-def stacking(centroid_list, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,power, angle_move1, angle_move2):
+def stacking(centroid_coords, n, Loberadius, search_radius,n_x,n_y, Bathymetry_,power, angle_move1, angle_move2):
     
-    if len(centroid_list[n-1]) == 0: #this will happen when the last event was HF
+    if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
          #Find area to move the lobe
-        centroid = centroid_list[n-2]
+        centroid = centroid_coords[n-2]
     else:
-        centroid = centroid_list[n-1]
+        centroid = centroid_coords[n-1]
             
     rad_int = Loberadius + Loberadius*0.00002
      

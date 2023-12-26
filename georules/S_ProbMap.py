@@ -18,7 +18,7 @@ inputs:
     
 output:
     Bathymetry_steps = maps of different lobes deposited
-    ls = list with centroids 
+    centroid_coords = a list of centroid coordinates
     ps = list with probability maps
     angle_list,column_corner_list,row_corner_list = requirements for gridding see S_rotate_coord for explanation
     lobe_array = array of the lobe of interest useful for gridding see S_rotate_coord (equivalent to image)
@@ -85,7 +85,7 @@ def Lobe_map(
     n=0 
 
     #Create list with centroids
-    ls = []
+    centroid_coords = []
 
     #create list with probability maps
     ps = []
@@ -117,7 +117,7 @@ def Lobe_map(
             # Convert the flattened index to a row and column index
             a, b = divmod(index, elevation_s.shape[1])
             Location_ = [a,b] #location of the centroid a = column , b = row
-            ls.append(Location_)
+            centroid_coords.append(Location_)
             
             #Find rotation angle
             rotation_angle = rot_angle(Location_,source)
@@ -161,7 +161,7 @@ def Lobe_map(
                # Convert the flattened index to a row and column index
                a, b = divmod(index, elevation_s.shape[1])
                Location_ = [a,b] #location of the centroid a = column , b = row
-               ls.append(Location_)  
+               centroid_coords.append(Location_)  
                 
                
                #Find rotation angle
@@ -198,7 +198,7 @@ def Lobe_map(
                mud_thickness = mud_elevation * norm_elevation
 
                Bathymetry_ = Bathymetry_ + mud_thickness
-               ls.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
+               centroid_coords.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
                
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
@@ -212,8 +212,8 @@ def Lobe_map(
                angle2 = quadrant_angles[current_state][1]
                
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(ls, n, lobe_geometry.scaled_width, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
-               ls.append(Location_),ps.append(prob_bsm)
+               Location_, prob_s, prob_bsm = stacking(centroid_coords, n, lobe_geometry.scaled_width, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
+               centroid_coords.append(Location_),ps.append(prob_bsm)
            
                #Find rotation angle
                rotation_angle = rot_angle(Location_,source)
@@ -248,7 +248,7 @@ def Lobe_map(
         # prepare output
         output = (
             Bathymetry_steps,
-            ls,
+            centroid_coords,
             ps,
             stack_list,
             angle_list,
