@@ -92,6 +92,7 @@ def Lobe_map(
 
     # Use markov-chains to find stacking patterns
     stack_list = stack_forecast(startstate, num_of_lobes, tm) # function inputs start state ="Q1"
+    stack_list = ['Q2', 'Q3', 'Q3', 'Q4', "Q4"] # NOTE: pinning this variable for debugging (delete later)
     print(stack_list)
     #source= channel
     
