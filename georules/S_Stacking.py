@@ -37,52 +37,7 @@ def stacking(
     rad_int = lobe_radius + lobe_radius * 0.00002
      
     #Create the circular mask
-
-    circular_mask1= np.zeros((nx,ny))
-
-    for i in range(0,nx):
-        for j in range(0,ny):
-            dis_centroid = (j - centroid[0])**2 + (i-centroid[1])**2# distance from the point(x,y) to the centroid
-                 
-            if dis_centroid< rad_int**2:
-                circular_mask1[i,j]= 1
-                    
-    #find angles from the centroid
-         
-    ang_rad2 = np.zeros((nx,ny))
-
-    for i in range(0,nx):
-        for j in range(0,ny):
-                ang_rad2[i,j]= np.arctan2((i-centroid[1]),(j-centroid[0])) #find the angle from the centroid -radians-
-                
-    ang_degrees2 = np.rad2deg(ang_rad2) #Find the angle from the centroid -degrees-
-    ang_degrees2 = ang_degrees2 + 180 # Find the angle from  the centroid from 0 - 360
-    ang_degrees2[ang_degrees2 == 360] = 0 #make 360 degrees equal to zero
-        
-    #angle mask
-                    
-    #1 if it is inside angle_move1 and angle_move2:
-    ang_mask1 = np.zeros((nx,ny)) #mask to determine where the lobe is going to move based on the angles
-
-    for i in range(0,nx):
-        for j in range(0,ny):
-            angle = ang_degrees2[i][j]
-            if angle_move1 < angle_move2:
-                if angle_move1 <= angle <= angle_move2:
-                    ang_mask1[i][j]=1
-            else:
-                if 0 <= angle <= angle_move2:
-                    ang_mask1[i][j]=1
-                elif angle_move1 <= angle<= 360:
-                    ang_mask1[i][j] = 1
-                        
-    # # overlap circle mask  ang angle mask
-    moving_mask1 = np.zeros((nx,ny))
-
-    for i in range(0,nx):
-        for j in range(0,ny):
-            if ang_mask1[i][j] ==circular_mask1[i][j] and ang_mask1[i][j] == 1 and circular_mask1[i][j] == 1:
-                moving_mask1[i][j] = 1
+    moving_mask = get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int)
                     
     #Find Probabilities
     elevation_s = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
@@ -94,7 +49,7 @@ def stacking(
 
     for i in range(0,nx):
         for j in range(0,ny):
-            if moving_mask1[i,j] == 0:
+            if moving_mask[i,j] == 0:
                 prob_s1[i,j]=0 
      
     
@@ -108,6 +63,68 @@ def stacking(
     
     
     return(Location1_, prob_s1, prob_s_b)
+
+def get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int):
+    
+    circle_mask = get_circle_mask(nx, ny, centroid, rad_int)
+    #find angles from the centroid
+    centroid_angles = get_centroid_angles(nx, ny, centroid) #make 360 degrees equal to zero
+        
+    #angle mask
+    #1 if it is inside angle_move1 and angle_move2:
+    prob_mask = get_prob_mask(nx, ny, angle_move1, angle_move2, centroid_angles)
+                        
+    # # overlap circle mask  ang angle mask
+    result = get_overlap(nx, ny, circle_mask, prob_mask)
+    return result
+
+def get_overlap(nx, ny, circle_mask, prob_mask):
+    mask = np.zeros((nx,ny))
+
+    for i in range(0,nx):
+        for j in range(0,ny):
+            if prob_mask[i][j] ==circle_mask[i][j] and prob_mask[i][j] == 1 and circle_mask[i][j] == 1:
+                mask[i][j] = 1
+    return mask
+
+def get_prob_mask(nx, ny, angle_move1, angle_move2, centroid_angles):
+    mask = np.zeros((nx,ny)) #mask to determine where the lobe is going to move based on the angles
+
+    for i in range(0,nx):
+        for j in range(0,ny):
+            angle = centroid_angles[i][j]
+            if angle_move1 < angle_move2:
+                if angle_move1 <= angle <= angle_move2:
+                    mask[i][j]=1
+            else:
+                if 0 <= angle <= angle_move2:
+                    mask[i][j]=1
+                elif angle_move1 <= angle<= 360:
+                    mask[i][j] = 1
+    return mask
+
+def get_centroid_angles(nx, ny, centroid):
+    angle_rad = np.zeros((nx,ny))
+
+    for i in range(0,nx):
+        for j in range(0,ny):
+                angle_rad[i,j]= np.arctan2((i-centroid[1]),(j-centroid[0])) #find the angle from the centroid -radians-
+                
+    angle_deg = np.rad2deg(angle_rad) #Find the angle from the centroid -degrees-
+    angle_deg = angle_deg + 180 # Find the angle from  the centroid from 0 - 360
+    angle_deg[angle_deg == 360] = 0
+    return angle_deg
+
+def get_circle_mask(nx, ny, centroid, rad_int):
+    mask = np.zeros((nx,ny))
+
+    for i in range(0,nx):
+        for j in range(0,ny):
+            dis_centroid = (j - centroid[0])**2 + (i-centroid[1])**2# distance from the point(x,y) to the centroid
+                 
+            if dis_centroid< rad_int**2:
+                mask[i,j]= 1
+    return mask
     
             
                 
