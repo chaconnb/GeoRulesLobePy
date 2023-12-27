@@ -201,14 +201,13 @@ def Lobe_map(
                # Stacking 
                lobe_location, prob_bsm = stacking(
                    centroid=centroid,
-                   n=n, 
                    lobe_radius=lobe_geometry.scaled_width,
                    nx=nx,
                    ny=ny,
                    bathymetry_layer=bathymetry.layers[-1],
                    angle_move1=angle1,
                    angle_move2=angle2,
-                ) # 0.2 debe ser cambiados por valores de funciones
+                ) 
                centroid_coords.append(lobe_location)
                ps.append(prob_bsm)
            
