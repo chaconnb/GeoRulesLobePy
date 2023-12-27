@@ -18,7 +18,7 @@ inputs:
     
 output:
     Bathymetry_steps = maps of different lobes deposited
-    ls = list with centroids 
+    centroid_coords = a list of centroid coordinates
     ps = list with probability maps
     angle_list,column_corner_list,row_corner_list = requirements for gridding see S_rotate_coord for explanation
     lobe_array = array of the lobe of interest useful for gridding see S_rotate_coord (equivalent to image)
@@ -29,17 +29,6 @@ from S_Stacking import stacking
 from S_Markov import stack_forecast
 from S_RotationAngle import rot_angle
 
-
-### Example of parameters
-
-#nx = 400 
-#ny = 400 
-#cell_size = 100 
-#width = 15000 
-#lenght = 30000 
-#tmax = 2 
-#num_of_lobes = 10  
-#power = 5
 
 # import from refactors
 from lobes import LobeGeometry, lobe_deposition
@@ -85,7 +74,7 @@ def Lobe_map(
     n=0 
 
     #Create list with centroids
-    ls = []
+    centroid_coords = []
 
     #create list with probability maps
     ps = []
@@ -101,30 +90,20 @@ def Lobe_map(
     row_corner_list = []
     
 
+    # Lobe placement
     while n < num_of_lobes: 
+        # intialize lobe 
         if n == 0:
-            #Lobe Placement
-            # Select Source Location - centroid (No modification)
-            elevation_s = bathymetry.get_elevation(n)
-            prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ### Sera necesario tenerlo que trasponer???\
-            prob_s[:,int(lobe_geometry.scaled_length):int(prob_s.shape[1])] = 0 
-            ps.append(prob_s)
-                
-            norm_prob_s = normalize_probability(prob_s)
-
-            # Use numpy.random.choice to select a flattened index - the centroid- with the specified weights
-            index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
-            # Convert the flattened index to a row and column index
-            a, b = divmod(index, elevation_s.shape[1])
-            Location_ = [a,b] #location of the centroid a = column , b = row
-            ls.append(Location_)
+            a, b = np.random.randint(0, nx), np.random.randint(0, ny)
+            lobe_location = [a,b] #location of the centroid a = column , b = row
+            centroid_coords.append(lobe_location)
             
             #Find rotation angle
-            rotation_angle = rot_angle(Location_,source)
+            rotation_angle = rot_angle(lobe_location, source)
             angle_list.append(rotation_angle) 
             
             res = lobe_deposition(
-                Location_,
+                lobe_location,
                 lobe_geometry.scaled_length,
                 lobe_geometry.scaled_width,
                 lobe_geometry.lobe_thickness,
@@ -143,7 +122,6 @@ def Lobe_map(
             row_corner_list.append(row_corn)
         
         else: 
-           
            # select stacking angles depending on current state
            current_state = stack_list[n] # according to Markov Chain
            
@@ -160,16 +138,16 @@ def Lobe_map(
                index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
                # Convert the flattened index to a row and column index
                a, b = divmod(index, elevation_s.shape[1])
-               Location_ = [a,b] #location of the centroid a = column , b = row
-               ls.append(Location_)  
+               lobe_location = [a, b] #location of the centroid a = column , b = row
+               centroid_coords.append(lobe_location)  # ?
                 
                
                #Find rotation angle
-               rotation_angle = rot_angle(Location_,source) 
+               rotation_angle = rot_angle(lobe_location, source) 
                angle_list.append(rotation_angle)
                
                res = lobe_deposition(
-                   Location_,
+                   lobe_location,
                    lobe_geometry.scaled_length,
                    lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
@@ -198,7 +176,7 @@ def Lobe_map(
                mud_thickness = mud_elevation * norm_elevation
 
                Bathymetry_ = Bathymetry_ + mud_thickness
-               ls.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
+               centroid_coords.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
                
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
@@ -208,19 +186,37 @@ def Lobe_map(
                # fig.show()
         
            else:
+               # Angles where new centroid should go
                angle1 = quadrant_angles[current_state][0]
                angle2 = quadrant_angles[current_state][1]
                
+               #centroid coords
+               if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
+                    #Find area to move the lobe
+                   centroid = centroid_coords[n-2]
+               else:
+                   centroid = centroid_coords[n-1]
+               
+               
                # Stacking 
-               Location_, prob_s, prob_bsm = stacking(ls, n, lobe_geometry.scaled_width, 0.2, nx, ny, bathymetry.layers[-1], power,angle1, angle2) # 0.2 debe ser cambiados por valores de funciones
-               ls.append(Location_),ps.append(prob_bsm)
+               lobe_location, prob_bsm = stacking(
+                   centroid=centroid,
+                   lobe_radius=lobe_geometry.scaled_width,
+                   nx=nx,
+                   ny=ny,
+                   bathymetry_layer=bathymetry.layers[-1],
+                   angle_move1=angle1,
+                   angle_move2=angle2,
+                ) 
+               centroid_coords.append(lobe_location)
+               ps.append(prob_bsm)
            
                #Find rotation angle
-               rotation_angle = rot_angle(Location_,source)
+               rotation_angle = rot_angle(lobe_location,source)
                angle_list.append(rotation_angle)
            
                res = lobe_deposition(
-                   Location_,
+                   lobe_location,
                    lobe_geometry.scaled_length,
                    lobe_geometry.scaled_width,
                    lobe_geometry.lobe_thickness,
@@ -248,7 +244,7 @@ def Lobe_map(
         # prepare output
         output = (
             Bathymetry_steps,
-            ls,
+            centroid_coords,
             ps,
             stack_list,
             angle_list,
