@@ -7,7 +7,6 @@ For Pyvista tutorials on gridding and slicing:
     https://docs.pyvista.org/version/stable/examples/01-filter/slicing.html
     https://docs.pyvista.org/version/stable/examples/00-load/create-uniform-grid.html#sphx-glr-examples-00-load-create-uniform-grid-py
 
-
 """
 import matplotlib.pyplot as plt
 import pyvista as pv 
