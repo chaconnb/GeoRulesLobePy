@@ -41,7 +41,7 @@ IMPORTANT: To create a branch from the main, go first to the main and create the
 ```console
 git checkout -b "my-new-branch" 
 ```
-
+IMPORTANT: New branches have to start in lowercase. 
 ### Making changes to your code. 
 To add a file or a change to a file. 
 ```console
