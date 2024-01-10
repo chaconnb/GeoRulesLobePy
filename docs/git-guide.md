@@ -115,7 +115,7 @@ python M_LRB.py
 
 1. Update Main
 ```console
-git switch Main
+git switch main
 git fetch
 git pull
 ```
