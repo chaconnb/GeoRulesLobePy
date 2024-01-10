@@ -2,6 +2,7 @@
 """
 
 @author: Nataly Chacon-Buitrago
+@refactoring: Daniel Willhelm
 
 lobe_map - Function generating the bathymetric map  as the num_of_lobes lobes are deposited
 inputs: 
