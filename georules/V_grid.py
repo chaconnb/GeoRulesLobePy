@@ -1,27 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun  5 10:04:57 2023
-
 @author: Nataly Chacon-Buitrago
 Function to plot grid using PyVista
 For Pyvista tutorials on gridding and slicing: 
     https://docs.pyvista.org/version/stable/examples/01-filter/slicing.html
     https://docs.pyvista.org/version/stable/examples/00-load/create-uniform-grid.html#sphx-glr-examples-00-load-create-uniform-grid-py
 
-input:
-    array_togrid = 3d array that we want to tranform to a grid
-    cellsize_x, cellsize_y, cellsize_z = proportions of the size in the x,y,z axis respectively (ex: 1,1,1 the size will be the same in the x,y,z - axis)
-    plot_grid = plot the grid in 3D. Input True or False
-    plot_orthogonal = plot orthogonal fence diagram. Input True or False
-    plot_slices = plot slices of the volume. Input True or False
-    slice_x = If plot_slices is True -> input number of slice in x
-    slice_y = If plot_slices is True -> input number of slice in y
-    slice_z = If plot_slices is True -> input number of slice in z
-    
-    
-output:
-    visualization
 
 """
 import matplotlib.pyplot as plt
@@ -32,8 +17,38 @@ import numpy as np
 def grid(array_togrid,cellsize_x,cellsize_y,cellsize_z,plot_grid=None,plot_orthogonal=None, plot_slices = None, 
          slice_x = None, slice_y = None, slice_z = None):
     
+    """Function to plot grid using PyVista. 
+       
+    Parameters
+    ----------
+    array_togrid: np.array
+        3D array to visualize. 
+    cellsize_x: float    
+        Proportion of cells in x axis with respect to z and y axis.
+    cellsize_y: float
+        Proportion of cells in y axis with respect to z and x axis.
+    cellsize_z: float
+        Proportion of cells in z axis with respect to y and x axis. 
+    plot_grid: boolean (True or False)
+        Plot the grid in 3D. 
+    plot_slices: boolean (True or False)
+        Plot slices of the volume.
+    slices_x: float
+        If plot_slices is True -> input number of slice in x.
+    slices_y: float
+        If plot_slices is True -> input number of slice in y.
+    slices_z: float
+        If plot_slices is True -> input number of slice in z.
+        
+    
+    Returns
+    -------
+    grid:
+        Grid visualizatiion.
+    """
+    
     ## Create the spacial reference
-    grid = pv.UniformGrid()
+    grid = pv.ImageData()
     
     # Set the grid dimensions: shape + 1 because we want to inject our values on
     #   the CELL data
