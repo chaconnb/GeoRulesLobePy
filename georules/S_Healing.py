@@ -3,12 +3,30 @@
 Created on Mon Mar 13 12:32:02 2023
 
 @author: Nataly Chacon-Buitrago 
-This function helps smooth the lobes when there is overlaping
 """
 
 import numpy as np
 
 def Healing_Factor(nx, ny, thick_update, bathymetry):
+    """Function to smooth topography when a new lobe overlaps existing ones.
+       
+    Parameters
+    ----------
+    nx : int
+        Sandbox size in the x direction.
+    ny : int
+        Sandbox size in the y direction.
+    thick_update: np.array    
+        Layer with tickness and location of lobe from n markov state. 
+    bathymetry: np.array
+        Bathymetry layer generated from n-1 markov state.
+    
+    Returns
+    -------
+    bathymetry_updated: np.array
+        Bathymetry with smooth topography.
+    """
+    
    
     bt = []  
     
