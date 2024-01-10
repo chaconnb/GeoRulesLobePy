@@ -13,7 +13,6 @@ inputs:
     length = maximum lobe length int
     tmax = maximum thickness int
     num_of_lobes = number of lobes to deposit
-    power = compensation power (See Jo. 2020)
     tm = transition matrix for markov chain
     startstate = state (the state is the quadrant- there are 4 quadrants the user can determine the angles betwwen each quadrant)
     
@@ -35,9 +34,8 @@ from S_RotationAngle import rot_angle
 from lobes import LobeGeometry, lobe_deposition
 from bathymetry import BathymetryLayers
 
-def normalize_probability(prob_s) -> np.ndarray:
-    """Normalize the ##WHAT## Probability.""" 
-    # NOTE: needs better docstring
+def probability_sum_one(prob_s) -> np.ndarray:
+    """Output array sums 1.""" 
     prob_sum = np.sum(prob_s) #prob_s has to be positive
     norm_prob_s = prob_s/prob_sum
     return norm_prob_s
@@ -57,7 +55,6 @@ def Lobe_map(
         lenght,
         tmax,
         num_of_lobes,
-        power,
         transition_matrix,
         startstate,
         quadrant_angles,
@@ -117,9 +114,6 @@ def Lobe_map(
             
             bathymetry.add_layer(Bathymetry_)
             
-            # print("plot layer")
-            # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-            # fig.show()
             
             column_corner_list.append(col_corn)
             row_corner_list.append(row_corn)
@@ -129,20 +123,19 @@ def Lobe_map(
            current_state = stack_list[n] # according to Markov Chain
            
            if current_state == "NMA":
-               
-               # Select Source Location - centroid (No modification)
-               elevation_s = bathymetry.get_elevation(n)
-               prob_s = (1/np.transpose(elevation_s))**power ## compensational power  ###Sera necesario tenerlo que trasponer???\
-               ps.append(prob_s)
-                   
-               norm_prob_s = normalize_probability(prob_s)
+           
+               # Select new source Location - centroid 
+               elevation = bathymetry.get_elevation(n)
+               probability_map  = 1 - elevation
+               prob_sum_one = probability_sum_one(probability_map)
+              
 
                # Use numpy.random.choice to select a flattened index - the centroid- with the specified weights
-               index = np.random.choice(elevation_s.size, p=norm_prob_s.flatten())
+               index = np.random.choice(elevation.size, p=prob_sum_one.flatten())
                # Convert the flattened index to a row and column index
-               a, b = divmod(index, elevation_s.shape[1])
+               a, b = divmod(index, elevation.shape[1])
                lobe_location = [a, b] #location of the centroid a = column , b = row
-               centroid_coords.append(lobe_location)  # ?
+               centroid_coords.append(lobe_location)  
                 
                
                #Find rotation angle
@@ -160,9 +153,6 @@ def Lobe_map(
                Bathymetry_, thick_updated, col_corn, row_corn = res
                bathymetry.add_layer(Bathymetry_)
                
-               # print("plot layer")
-               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               # fig.show()
 
                column_corner_list.append(col_corn)
                row_corner_list.append(row_corn)
@@ -184,10 +174,7 @@ def Lobe_map(
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
                
-               # print("plot layer")
-               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               # fig.show()
-        
+               
            else:
                # Angles where new centroid should go
                angle1 = quadrant_angles[current_state][0]
@@ -234,11 +221,8 @@ def Lobe_map(
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
                
-               # print("plot layer")
-               # fig, ax = bathymetry._plot_layer(f'layer-{n}', idx=n, save=False)
-               # fig.show()
+        
 
-        # NOTE: `Bathymetry_steps` was being used as a "Global Variable" :(
         Bathymetry_steps = bathymetry.layers.copy()
         
         n = n+1 
