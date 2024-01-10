@@ -1,5 +1,4 @@
 """
-Created on Sun Mar 19 11:16:23 2023
 @author: Nataly Chacon-Buitrago
 """
 from typing import Tuple
@@ -46,7 +45,7 @@ def stacking(
     moving_mask = get_moving_mask(nx, ny, angle_move1, angle_move2, centroid, rad_int)
                     
     #Find Probabilities
-    elevation = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer)+0.0001)+0.0001
+    elevation = (bathymetry_layer - np.min(bathymetry_layer))/(np.max(bathymetry_layer) - np.min(bathymetry_layer)) 
     centroid_probability_map = 1-elevation # probability map before the mask 
     norm_prob = get_normalized_proobability(nx, ny, moving_mask, centroid_probability_map)
     
