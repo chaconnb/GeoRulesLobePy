@@ -26,7 +26,7 @@ output:
 """
 import numpy as np
 from S_Stacking import stacking
-from S_Markov import stack_forecast
+from markov import  MarkovSequence
 from S_RotationAngle import rot_angle
 
 
@@ -57,12 +57,13 @@ def Lobe_map(
         tmax,
         num_of_lobes,
         power,
-        tm,
+        transition_matrix,
         startstate,
         quadrant_angles,
         source,
         cellsize_z,
-        n_mud
+        n_mud,
+        states
     ):
     """Lobe Map"""
     # Calculate lobe array with drop geometry
@@ -80,7 +81,8 @@ def Lobe_map(
     ps = []
 
     # Use markov-chains to find stacking patterns
-    stack_list = stack_forecast(startstate, num_of_lobes, tm) # function inputs start state ="Q1"
+    ms = MarkovSequence(states=states, transition_matrix=transition_matrix)
+    stack_list = ms.get_sequence(sequence_len = num_of_lobes, init_state = startstate)
     print(stack_list)
     #source= channel
     
