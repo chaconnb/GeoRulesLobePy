@@ -29,6 +29,16 @@ def get_norm_elevation(bathymetry:BathymetryLayers, idx:int=None) -> np.ndarray:
     norm_elevation = (inv_bath - inv_bath.min())/(inv_bath.max() - inv_bath.min())
     return norm_elevation
 
+def HF_counter(stack_list_segment):
+    "Counts how many HF Markov states are at the end of a list"
+    count = 0
+    for i in reversed(stack_list_segment):
+        if i == "HF":
+            count += 1
+        else:
+            return(count)
+    
+
 def Lobe_map(
         nx,
         ny,
@@ -224,8 +234,11 @@ def Lobe_map(
                
                #centroid coords
                if len(centroid_coords[n-1]) == 0: #this will happen when the last event was HF
-                    #Find area to move the lobe
-                   centroid = centroid_coords[n-2]
+                    #Find centroid to move the lobe
+                   stack_list_segment = stack_list[0:n] #list with states before the present state
+                   HF_counts= HF_counter(stack_list_segment)
+                   centroid = centroid_coords[n-HF_counts-1]
+                   
                else:
                    centroid = centroid_coords[n-1]
                
