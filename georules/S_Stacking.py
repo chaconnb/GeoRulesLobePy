@@ -50,7 +50,6 @@ def stacking(
     centroid_probability_map = 1-elevation # probability map before the mask 
     norm_prob = get_normalized_proobability(nx, ny, moving_mask, centroid_probability_map)
     
-    print(centroid)
     
     #Nan values present when centroid is too close to border
     #In case of havinf Nan values, the new centroid will be equal to the old centroid.
