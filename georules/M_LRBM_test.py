@@ -6,14 +6,13 @@ Created on Tue Apr 25 14:50:19 2023
 """
 
 
-
+import numpy as np
 from S_ProbMap import Lobe_map
 from bathymetry import  varinace_bathymetry_maps
 from utils import save_bath_as_array
 from utils import save_list_as_json
 from utils import save_centroids
 from utils import save_array
-
 
 ## Reservoir Parameter Settings
 wmax=[15000] #m
