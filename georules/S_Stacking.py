@@ -1,5 +1,6 @@
 """
 @author: Nataly Chacon-Buitrago
+@refactoring: Daniel Willhelm
 """
 from typing import Tuple
 import numpy as np
@@ -49,16 +50,23 @@ def stacking(
     centroid_probability_map = 1-elevation # probability map before the mask 
     norm_prob = get_normalized_proobability(nx, ny, moving_mask, centroid_probability_map)
     
-    # Convert the flattened index to a column and row index
-    index = np.random.choice(norm_prob.size, p=norm_prob.flatten())
-    a,b = divmod(index, norm_prob.shape[1])
-   
-    if moving_mask[a,b] != 1.0: 
-        raise ValueError('Lobe coordinates are not in the correct quadrant.')
-
-    lobe_location = [b,a] #location of the centroid, I had to swap the positions of 'a' and 'b' to make it work.
+    print(centroid)
     
+    #Nan values present when centroid is too close to border
+    #In case of havinf Nan values, the new centroid will be equal to the old centroid.
+    if np.isnan(norm_prob).any():
+       lobe_location = centroid 
+    
+    else:
+        # Convert the flattened index to a column and row index
+        index = np.random.choice(norm_prob.size, p=norm_prob.flatten())
+        a,b = divmod(index, norm_prob.shape[1])
+        
+        lobe_location = [b,a] #location of the centroid, I had to swap the positions of 'a' and 'b' to make it work.
+        
     return lobe_location, centroid_probability_map 
+    
+   
 
 
 def get_circle_mask(nx, ny, centroid, rad_int):
