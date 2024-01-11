@@ -39,11 +39,10 @@ n_mud = [2] #number of cells mud that covers lobe
 mud_property = [0.18] #property mud
 states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
 
-
 num_reals = 1
 
 n = 1
-n_tests = 20
+n_tests = 300
 
 while n < n_tests:
     for i in range (0, num_reals): 
@@ -95,7 +94,6 @@ while n < n_tests:
         save_list_as_json("columns_corner{}".format(n),"3d_grid_inputs", columns_corner)
         save_list_as_json("rows_corner{}".format(n),"3d_grid_inputs", rows_corner)
         save_list_as_json("quadrants{}".format(n),"3d_grid_inputs", quadrants)
-        
         
         n = n + 1
         
