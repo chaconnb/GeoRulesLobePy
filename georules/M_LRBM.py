@@ -17,7 +17,7 @@ import math
 wmax=[15000] #m
 tmax=[2] #m
 lenght =[30000] #m 
-lobes = [5] #number of lobes
+lobes = [30] #number of lobes
 cellsize = [100] #cell size
 nx = [250]
 ny = [250]
@@ -42,6 +42,7 @@ states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
 
 num_reals = 1
 
+
 for i in range (0, num_reals): 
     
     result = Lobe_map(
@@ -62,7 +63,7 @@ for i in range (0, num_reals):
     )
     (
         Bathymetry_maps,
-        centoids,
+        centroids,
         prob_maps,
         quadrants,
         angle_stack,
@@ -76,10 +77,10 @@ for i in range (0, num_reals):
     # ## Create 3D Grid  
     
     nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
-    sandbox_grid = sandbox(Value_4_lenght[0],Value_2_wmax[0],Value_6_cellsize[0],lobe_image,Value_19_cellsize_z[0],Value_3_tmax[0],Value_15_gp[0],Value_21_mud_property[0],
-    Value_20_n_mud[0],Value_13_a1[0],Value_14_a2[0],Value_7_nx[0],Value_8_ny[0],nz,Value_5_lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
+    sandbox_grid = sandbox(lenght[0],wmax[0],cellsize[0],lobe_image,cellsize_z[0],tmax[0],gp[0],mud_property[0],
+    n_mud[0],a1[0],a2[0],nx[0],ny[0],nz,lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
 
-    # # Visualize 
+    # # # Visualize 
     grid(sandbox_grid,1,1,1,plot_slices=True, slice_x=40, slice_y=30, slice_z=2) #change depending on desired type of visualization 
     
     
