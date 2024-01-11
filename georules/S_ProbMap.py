@@ -3,25 +3,7 @@
 
 @author: Nataly Chacon-Buitrago
 @refactoring: Daniel Willhelm
-
-lobe_map - Function generating the bathymetric map  as the num_of_lobes lobes are deposited
-inputs: 
-    nx = number of cells
-    ny = number of cells
-    cell_size = size of each cell in m
-    width = maximum lobe width int
-    length = maximum lobe length int
-    tmax = maximum thickness int
-    num_of_lobes = number of lobes to deposit
-    tm = transition matrix for markov chain
-    startstate = state (the state is the quadrant- there are 4 quadrants the user can determine the angles betwwen each quadrant)
-    
-output:
-    Bathymetry_steps = maps of different lobes deposited
-    centroid_coords = a list of centroid coordinates
-    ps = list with probability maps
-    angle_list,column_corner_list,row_corner_list = requirements for gridding see S_rotate_coord for explanation
-    lobe_array = array of the lobe of interest useful for gridding see S_rotate_coord (equivalent to image)
+ 
 
 """
 import numpy as np
@@ -63,7 +45,65 @@ def Lobe_map(
         n_mud,
         states
     ):
-    """Lobe Map"""
+    """Function generating the bathymetric map  as the num_of_lobes lobes are deposited.
+       
+    Parameters
+    ----------
+    nx : int
+        Sandbox size in the x direction.
+    ny : int
+        Sandbox size in the y direction.
+    cell_size : int
+        Size of each cell in m.
+    width : int
+        Maximum lobe width in m.
+    lenght : int
+        Maximum lobe lenght in m.
+    tmax : int
+        Maximum height of lome in m. 
+    num_of_lobes : int
+        Number of lobes to deposit.
+    transition_matrix : np.array
+        Transition matrix for Markov chain.
+    startstate : string
+        Starting state for generating Markov chain. 
+    quadrant angles : dictionary
+        A dictionary with keys representing Markov states and values containing 
+        a list of angles indicating the starting and ending points for each key.
+    source : list
+        Coordinate where the source of sediment (channel) is located in the sandbox. 
+    cellsize_z: int
+        Size of each cell on the z-axis.
+    n_mud: int
+        Maximum number of mud cells that will be input into the sandbox at the 
+        'HF' Markov state.
+    states: list with strings
+        List of Markov states.
+    
+    Returns
+    -------
+    Bathymetry_steprobability_maps: np.array
+        Maprobability_maps of different lobes deposited.
+    Centroid_coords: list
+        List of centroid coordinates.
+    probability_maps: list of np.arrays.
+        Probability map for finding new centroid. Topographic highs have low 
+        probabilities and topographic lows have high probabilities. 
+    stack_list: list
+        List with Markov-states
+    angle_list: list
+        A list indicating the angles towards which the lobes are tilted, 
+        relative to the source.
+    column_corner_list: list
+        A list containing coordinates that specify the location of the 
+        upper-right column of a single lobe in the sandbox.
+    row_corner_list: list
+        A list containing coordinates that specify the location of the 
+        upper-right row of a single lobe in the sandbox.
+    lobe_geometry.lobe_thickness: np.array
+        An array containing the thickness at each specific x and y coordinate
+        of a lobe element, with the maximum width, length, and height specified in the input.
+    """
     
     # Calculate lobe array with drop geometry
     lobe_geometry = LobeGeometry(width=width,length=lenght, tmax=tmax, cell_size=cell_size)
@@ -77,7 +117,8 @@ def Lobe_map(
     centroid_coords = []
 
     #create list with probability maps
-    ps = []
+    
+    probability_maps = []
 
     # Use markov-chains to find stacking patterns
     ms = MarkovSequence(states=states, transition_matrix=transition_matrix)
@@ -170,7 +211,7 @@ def Lobe_map(
                mud_thickness = mud_elevation * norm_elevation
 
                Bathymetry_ = Bathymetry_ + mud_thickness
-               centroid_coords.append([]),ps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
+               centroid_coords.append([]),probability_maps.append([]),column_corner_list.append([]),row_corner_list.append([]),angle_list.append([])
                
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
@@ -200,7 +241,7 @@ def Lobe_map(
                    angle_move2=angle2,
                 ) 
                centroid_coords.append(lobe_location)
-               ps.append(prob_bsm)
+               probability_maps.append(prob_bsm)
            
                #Find rotation angle
                rotation_angle = rot_angle(lobe_location,source)
@@ -224,16 +265,16 @@ def Lobe_map(
                
         
 
-        Bathymetry_steps = bathymetry.layers.copy()
+        Bathymetry_steprobability_maps = bathymetry.layers.copy()
         
         n = n+1 
         print(n) #track progress
         
         # prepare output
         output = (
-            Bathymetry_steps,
+            Bathymetry_steprobability_maps,
             centroid_coords,
-            ps,
+            probability_maps,
             stack_list,
             angle_list,
             column_corner_list,
