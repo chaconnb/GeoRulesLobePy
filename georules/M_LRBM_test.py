@@ -11,11 +11,9 @@ from S_ProbMap import Lobe_map
 from bathymetry import  varinace_bathymetry_maps
 from utils import save_bath_as_array
 from utils import save_list_as_json
-from S_3Dgrid_healing import sandbox
-from V_grid import grid
-import numpy as np
-import os
-import math 
+from utils import save_centroids
+from utils import save_array
+
 
 ## Reservoir Parameter Settings
 wmax=[15000] #m
@@ -81,28 +79,23 @@ while n < n_tests:
     
         ##Calculates Variance of thicknesses in bathymetry maps
         
-        # variance_thickness = varinace_bathymetry_maps(Bathymetry_maps)
+        ##Calculates Variance of thicknesses in bathymetry maps
+        variance_thickness = varinace_bathymetry_maps(Bathymetry_maps)
         
-        # #Turn list of bathymetry maps to arrays and save array to a file
-        # save_bath_as_array("bathy_array{}".format(n),"results", Bathymetry_maps)
+        #
+        save_array("variance_thickness{}".format(n),"surface_variance",variance_thickness)
         
-        # #Save lists as json files
-        # save_list_as_json("angle_stack{}".format(n),"results", angle_stack)
+        #Turn list of bathymetry maps to arrays and save array to a file
+        save_bath_as_array("bathy_array{}".format(n),"3d_grid_inputs", Bathymetry_maps)
         
-        # save_list_as_json("columns_corner{}".format(n),"results", columns_corner)
+        #save centroids
+        save_centroids("centroids{}".format(n),"centroids", centroids)
         
-        # save_list_as_json("rows_corner{}".format(n),"results", rows_corner)
-        
-        # save_list_as_json("quadrants{}".format(n),"results", quadrants)
-        
-        # ## Create 3D Grid  
-        
-        # nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
-        # sandbox_grid = sandbox(lenght[0],wmax[0],cellsize[0],lobe_image,cellsize_z[0],tmax[0],gp[0],mud_property[0],
-        # n_mud[0],a1[0],a2[0],nx[0],ny[0],nz,lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
-
-        # # # # Visualize 
-        # grid(sandbox_grid,1,1,1,plot_slices=True, slice_x=40, slice_y=30, slice_z=2) #change depending on desired type of visualization 
+        #Save lists as json files
+        save_list_as_json("angle_stack{}".format(n),"3d_grid_inputs", angle_stack)
+        save_list_as_json("columns_corner{}".format(n),"3d_grid_inputs", columns_corner)
+        save_list_as_json("rows_corner{}".format(n),"3d_grid_inputs", rows_corner)
+        save_list_as_json("quadrants{}".format(n),"3d_grid_inputs", quadrants)
         
         
         n = n + 1
