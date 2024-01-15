@@ -9,7 +9,7 @@ return:
     lobe_grid = 3d array with lobe and lobe properties    
 """
 import numpy as np
-from S_MapPropXY_ver2 import PropXY
+from S_MapPropXY import PropXY
 from S_MapPropZX import PropXZ
 
 ###Input example:

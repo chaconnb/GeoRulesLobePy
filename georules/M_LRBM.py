@@ -17,7 +17,7 @@ import math
 wmax=[15000] #m
 tmax=[2] #m
 lenght =[30000] #m 
-lobes = [30] #number of lobes
+lobes = [5] #number of lobes
 cellsize = [100] #cell size
 nx = [250]
 ny = [250]
@@ -74,7 +74,7 @@ for i in range (0, num_reals):
            
     
     
-    # ## Create 3D Grid  
+    # # ## Create 3D Grid  
     
     nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
     sandbox_grid = sandbox(lenght[0],wmax[0],cellsize[0],lobe_image,cellsize_z[0],tmax[0],gp[0],mud_property[0],

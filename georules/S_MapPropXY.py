@@ -1,62 +1,66 @@
 # -*- coding: utf-8 -*-
 """
+Created on Mon Oct 16 22:06:17 2023
 
-@author: Nataly Chacon-Buitrago
+@author: Nataly Chacon-Buitrago 
 This function builds the facies trend in the XY axis. Best quality in the axis. 
 """
+
 import numpy as np
-
-## example input: 
-# length = Value_4_lenght[0]
-# wmax = Value_2_wmax[0]
-# cell_size = Value_6_cellsize[0]
-# a1 = Value_13_a1[0]
-# a2 = Value_14_a2[0]
-# Rx = length
-# Ry = wmax/2
+from S_Lobegeom import drop_geometry
+from S_PasteArray import paste
+from S_nonzero_one import convert_nonzero_to_one
 
 
-def PropXY(length,wmax,cell_size):
+#length = Value_4_lenght[0]
+#wmax = Value_2_wmax[0]
+#cell_size = Value_6_cellsize[0]
+#a1 = Value_13_a1[0]
+#a2 = Value_14_a2[0]
+#y_interval = 100
+
+
+
+
+def PropXY(length,wmax,cell_size,a1,a2):
     
-    Rx = length 
-    Ry = wmax/2
+    wmax_list =  [i for i in range(cell_size*2,wmax, cell_size)]
+    lenght_list =  [i for i in range(int(length/len(wmax_list)),length,int(length/len(wmax_list )))]
+    
+    #create an array of zeros
+    lobe_XY = np.zeros((int(wmax/cell_size),int(length/cell_size)))
+    y_interval = cell_size
+    
+    ###
+    for i in range(10, len(wmax_list)): 
+    
+        x_interval =  [i for i in range(0,lenght_list[i], cell_size)]
+        lobe1 =  drop_geometry(wmax_list[i],lenght_list[i],1,x_interval,cell_size,a1,a2)
 
-    ## built the array and the lobe shape
-    #x-axis
-    x_interval = [i for i in range(0,length, cell_size)]
- 
-    #y-axis
-    y_interval = [i for i in range(0,int(wmax/2), cell_size)]
-    y_interval_neg = [ i*-1 for i in y_interval]
+        #convert nonzero to one
+        lobe1 = convert_nonzero_to_one(lobe1)
 
+        #Paste lobe1 in lobeXY
+        coor = int((wmax - wmax_list[i])/(y_interval*2))
+        lobeXY_f =  paste(lobe_XY.copy(),lobe1.copy(),(coor,0))
+        lobe_XY = lobe_XY +  lobeXY_f
+        
+    # Create a copy of the array to store the normalized values
+    lobe_XY_norm = lobe_XY.copy()
 
-    y_coord_inv = y_interval[::-1]
-    y_coord_total = y_coord_inv + y_interval_neg
+    # Find the non-zero elements
+    nonzero_elements = lobe_XY_norm[lobe_XY_norm != 0]
 
-    # create a grid of x and y values
-    X_coord,Y_coord = np.meshgrid(x_interval,y_coord_total)
+    ### normalize lobe 
+    min_value = np.min(lobe_XY[lobe_XY != 0])
+    max_value = np.max(lobe_XY)
 
-    # calculate the values of p for each (x,y) pair
-    p = ((X_coord/Rx)**2 + (Y_coord/Ry)**2)**(1/2)
-    p = np.absolute(1-p) #this is done if we want the property to be  high towards  the axis and low towards the margin! 
-
-    return(p)
-
-
-
-#### Returns lobe shape
-#lobe_XY =  drop_geometry(wmax,length,1,x_interval,cell_size,a1,a2) 
-#let's change  all the non-zero elements to 1
-#lobe_XY = np.where(lobe_XY != 0,1,0)
-#lobe_XY = np.absolute(p*lobe_XY)
- 
-
-
-
-
-
-
-
-
-
-
+    ## normalize the array to the range [0,1]
+    lobe_XY_norm[lobe_XY != 0] = (nonzero_elements - min_value) / (max_value - min_value)
+        
+    return(lobe_XY_norm)
+        
+        
+        
+        
+    
