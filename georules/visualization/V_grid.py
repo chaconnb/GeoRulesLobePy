@@ -51,11 +51,11 @@ def grid(array_togrid,cellsize_x,cellsize_y,cellsize_z,plot_grid=None,plot_ortho
     
     # Set the grid dimensions: shape + 1 because we want to inject our values on
     #   the CELL data
-    grid.dimensions = np.array(array_togrid.shape) +1 
+    grid.dimensions = np.array(array_togrid.shape) + 1 
     
     # Edit the spatial reference
     grid.origin = (0, 0, 0)  # The bottom left corner of the data set
-    grid.spacing = (cellsize_x,cellsize_y,cellsize_z)  # These are the cell sizes along each axis
+    grid.spacing = (cellsize_x, cellsize_y, cellsize_z)  # These are the cell sizes along each axis
     
     # Add the data values to the cell data
     grid.cell_data["values"] = array_togrid.flatten(order="F")  # Flatten the array
@@ -72,12 +72,3 @@ def grid(array_togrid,cellsize_x,cellsize_y,cellsize_z,plot_grid=None,plot_ortho
         cmap = plt.cm.get_cmap("viridis", 5)
         slices = grid.slice_orthogonal(x=slice_x, y=slice_y, z=slice_z)
         slices.plot(cmap=cmap)
-        
-   
-        
-        
-    
-    
-    
-    
-

@@ -5,11 +5,13 @@ Created on Tue Apr 25 14:50:19 2023
 @author: Nataly Chacon-Buitrago
 """
 
+# visualization
 
-
-from S_ProbMap import Lobe_map
-from S_3Dgrid_healing import sandbox
-from V_grid import grid
+from georules.S_ProbMap import Lobe_map
+from georules.variance_bathymetry import varinace_bathymetry_maps
+from georules.utils import save_bath_as_array
+from georules.S_3Dgrid_healing import sandbox
+from georules.visualization.V_grid import grid
 import numpy as np
 import math 
 
@@ -38,11 +40,7 @@ n_mud = [2] #number of cells mud that covers lobe
 mud_property = [0.18] #property mud
 states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
 
-
-
 num_reals = 1
-
-
 for i in range (0, num_reals): 
     
     result = Lobe_map(

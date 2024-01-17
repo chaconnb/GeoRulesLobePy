@@ -7,14 +7,12 @@
 
 """
 import numpy as np
-from S_Stacking import stacking
-from markov import  MarkovSequence
-from S_RotationAngle import rot_angle
 
-
-# import from refactors
-from lobes import LobeGeometry, lobe_deposition
-from bathymetry import BathymetryLayers
+from georules.S_Stacking import stacking
+from georules.S_RotationAngle import rot_angle
+from georules.lobes import LobeGeometry, lobe_deposition
+from georules.bathymetry import BathymetryLayers
+from georules.markov import  MarkovSequence
 
 def probability_sum_one(prob_s) -> np.ndarray:
     """Output array sums 1.""" 
@@ -38,7 +36,6 @@ def HF_counter(stack_list_segment):
         else:
             return(count)
     
-
 def Lobe_map(
         nx,
         ny,
@@ -276,8 +273,6 @@ def Lobe_map(
                # update bathymetry
                bathymetry.add_layer(Bathymetry_)
                
-        
-
         Bathymetry_steprobability_maps = bathymetry.layers.copy()
         
         n = n+1 
@@ -295,9 +290,3 @@ def Lobe_map(
             lobe_geometry.lobe_thickness
         )
     return output 
-
-
-
-
-
-    

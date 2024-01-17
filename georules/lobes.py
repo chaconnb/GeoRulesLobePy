@@ -1,9 +1,9 @@
 import numpy as np
 import math 
 
-from S_Healing import Healing_Factor
-from S_RotatePaste import rot_paste
-from bathymetry import BathymetryLayers
+from georules.S_Healing import Healing_Factor
+from georules.S_RotatePaste import rot_paste
+from georules.bathymetry import BathymetryLayers
 
 def lobe_deposition(
         location:list,

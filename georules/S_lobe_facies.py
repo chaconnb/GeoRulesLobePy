@@ -9,8 +9,9 @@ return:
     lobe_grid = 3d array with lobe and lobe properties    
 """
 import numpy as np
-from S_MapPropXY import PropXY
-from S_MapPropZX import PropXZ
+
+from georules.S_MapPropXY import PropXY
+from georules.S_MapPropZX import PropXZ
 
 ###Input example:
 #lobe_thi = lobe_image
