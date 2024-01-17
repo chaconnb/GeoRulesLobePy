@@ -40,11 +40,7 @@ n_mud = [2] #number of cells mud that covers lobe
 mud_property = [0.18] #property mud
 states = ["Q1", "Q2", "Q3", "Q4", "NMA", "HF"]
 
-
-
 num_reals = 1
-
-
 for i in range (0, num_reals): 
     
     result = Lobe_map(
