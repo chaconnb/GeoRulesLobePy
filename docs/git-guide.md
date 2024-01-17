@@ -81,6 +81,18 @@ git switch main
 git fetch; git pull
 ```
 
+### Deleting Files
+To remove a file from git tracking. You need to commit the change after deleting.
+```console
+git remove <filename>
+```
+> NOTE: This will delete the local copy of the file.
+
+To remove the file from git tracking, but keep the local copy
+```console
+git remove --cache <filename>
+```
+
 ## Git Workflow I
 These steps describe a simple git workflow. You can see a visualization of the workflow
 in the `./workflow-git.pdf`. 
