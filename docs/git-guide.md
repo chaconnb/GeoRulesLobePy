@@ -41,7 +41,7 @@ IMPORTANT: To create a branch from the main, go first to the main and create the
 ```console
 git checkout -b "my-new-branch" 
 ```
-
+IMPORTANT: New branches have to start in lowercase. 
 ### Making changes to your code. 
 To add a file or a change to a file. 
 ```console
@@ -127,12 +127,23 @@ python M_LRB.py
 
 1. Update Main
 ```console
-git switch Main
+git switch main
 git fetch
 git pull
 ```
 2. Create new banch (steps 1 and 2 from Git Workflow I)
 3. Suggestion: Create PR to track changes!
+
+## How to create a PR
+After creating a new branch on your local, you are ready to create a PR!
+1. Make a small change on your local.
+2. Add and commit your new change.
+3. Then push:
+```console
+   git push --set-upstream origin 'my-new-branch'
+```
+4. Go to Pull requests on github and create a new pull request!
+
 
 ## Delete a file from a Git repository 
 1. If we want to delete a file and also delete it from local file system:

@@ -1,6 +1,12 @@
+"""
+@author:Nataly Chacon-Buitrago
+@refactoring:Daniel Willhelm
+
+"""
+
 import numpy as np 
 import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
+
 
 class BathymetryLayers: 
 
@@ -19,7 +25,7 @@ class BathymetryLayers:
 
     def get_elevation(self, idx:int): 
         layer = self.layers[idx]
-        elevation = (layer - np.min(layer))/(np.max(layer) + 0.0001) + 0.0001
+        elevation = (layer - np.min(layer))/(np.max(layer) - np.min(layer)) 
         return elevation  
     
     def _plot_layer(self, filename:str, idx:int, save:bool=True): 
