@@ -246,6 +246,10 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
        Maximum width lobe.
    cell_size : float
        Size of the grid x and y directions. 
+   lobe_image: np.array
+       Thickness of lobe.
+   cellsize_z: int
+       Size of each cell in the z-axis.
    lobe_tmax : float
        Maximum thickness lobe. 
    global_prop : float
@@ -278,6 +282,8 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
       in S_PasteArray.py.
    Bathymetry_maps : BathymetryLayers
      Bathymetry layer instance.
+   quadrants: list
+     List of markov-states.
 
    Returns
    -------
@@ -308,7 +314,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
     
     for n in range(1, n_lobe+1): 
         if n == 1:
-            print(n)
+            print("lobe",n)
             # intialize sandbox grid
             sandbox_grid = intialize_sandbox_grid(
                 lobe_image, cellsize_z, lobe_tmax, nx, ny, nz, angle_stack, 
@@ -328,7 +334,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 # after you create it - why do you have it? 
         
             else: 
-                print(n)
+                print("lobe",n)
                 
                 bath_dif, lobe_thickness_new, grid_lobe_new = get_new_lobe(
                     lobe_length, lobe_wmax, cell_size, cellsize_z, global_prop, 
