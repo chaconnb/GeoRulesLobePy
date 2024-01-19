@@ -61,7 +61,7 @@ def grid(array_togrid,cellsize_x,cellsize_y,cellsize_z,plot_grid=None,plot_ortho
     grid.cell_data["values"] = array_togrid.flatten(order="F")  # Flatten the array
     
     if plot_grid:
-        grid.plot(show_edges=True,jupyter_backend='trame')
+        grid.plot(show_edges=True,jupyter_backend='trame') #trame is used for interactive visualization in jupyter notebooks
         
     if plot_orthogonal:
         cmap = plt.cm.get_cmap("viridis", 4)
