@@ -3,3 +3,4 @@ scipy
 matplotlib
 pyvista==0.43.1
 ipykernel # used for interactive mode in VSCode
+'jupyterlab>=3' ipywidgets 'pyvista[all,trame]' #used for interactive visualization on jupyter notebooks with pyvista
