@@ -324,7 +324,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
         else:
             
             if quadrants[n-1] == "HF":
-                print(n)
+                print("lobe",n)
                 #nz_values - values for z axis
                 nz_values = np.linspace(0, nz-cellsize_z, int(nz/cellsize_z))
                 cell_num, sandbox_grid = add_mud_layer(n, cellsize_z, mud_property, nx, ny, 
