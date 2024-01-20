@@ -22,6 +22,21 @@ https://github.com/chaconnb/georules.git
 git clone git@github.com:chaconnb/georules.git
 ```
 5. Go to the spider and search for the folder you created in step 2. You should have all the files from the remote repository, and on the console, you should be ready to start interacting with GitHub!
+
+### Setting up a local repo for vscode
+1. Create a folder where you want to start your repository.
+2. Go to github ->  serach for your repository -> go to <>code (Green button top right corner.) -> Go to HTTPS -> copy your repository's website. In this case:
+```console
+https://github.com/chaconnb/georules.git
+```
+3. Open VS code where your folder is (step1)
+```console
+git clone git@github.com:chaconnb/georules.git
+```
+5. Initialize the repo:
+```console
+git init
+``` 
    
 ### Branching
 A branch represents an independent line of development. Branches serve as an abstraction for the edit/stage/commit process. You can think of them as a way to request a brand new working directory, staging area, and project history. New commits are recorded in the history for the current branch, which results in a fork in the history of the project.
