@@ -57,6 +57,7 @@ IMPORTANT: To create a branch from the main, go first to the main and create the
 git checkout -b "my-new-branch" 
 ```
 IMPORTANT: New branches have to start in lowercase.
+
 IMPORTANT: To see updated branches use:
 ```console
 git pull; git fetch
