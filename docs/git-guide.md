@@ -188,6 +188,11 @@ To open VSCode from the terminal, use:
 ```console 
 code . 
 ```
+To run cells in a .py file (jupyter notebook), use:
+
+```console 
+#%%
+```
 
 Remember to open the from the `georules` folder so that VSCode can recognize that this is a git repo. 
 (i.e., a folder with a .git directory)
