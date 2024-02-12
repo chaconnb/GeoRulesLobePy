@@ -1,4 +1,4 @@
-`lll`
+`Georules`
 
 # GeoRules
 To run the main code run: 
