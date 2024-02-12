@@ -130,7 +130,6 @@ def Lobe_map(
     # Use markov-chains to find stacking patterns
     ms = MarkovSequence(states=states, transition_matrix=transition_matrix)
     stack_list = ms.get_sequence(sequence_len = num_of_lobes, init_state = startstate)
-    print(stack_list)
     #source= channel
     
     # create list with parameters to find coordinates needed for gridding
@@ -276,7 +275,7 @@ def Lobe_map(
         Bathymetry_steprobability_maps = bathymetry.layers.copy()
         
         n = n+1 
-        print(n) #track progress
+        #print(n) #track progress
         
         # prepare output
         output = (

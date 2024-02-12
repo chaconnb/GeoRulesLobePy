@@ -10,7 +10,7 @@ return:
 """
 import numpy as np
 
-from georules.S_MapPropXY_ver2 import PropXY
+from georules.S_MapPropXY import PropXY
 from georules.S_MapPropZX import PropXZ
 
 ###Input example:
