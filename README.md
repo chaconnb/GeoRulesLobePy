@@ -7,6 +7,10 @@ To run the main code run:
 conda activate georules
 ```
 2. Run the main notebook: georules/notebooks/Results_Visualizations.ipynb
+3. Run the main:
+```bash
+main.py
+```  
 
 
 ### Developer Quick Start
