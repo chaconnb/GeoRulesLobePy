@@ -3,12 +3,11 @@
 # GeoRules
 To run the main code run: 
 1. Activate the `georules` environment
-2. Run the main script
 ```bash
-# run the main script
 conda activate georules
-python main.py
 ```
+2. Run the main notebook: georules/notebooks/Results_Visualizations.ipynb
+
 
 ### Developer Quick Start
 GeoRules uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the Conda documentation.  
