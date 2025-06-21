@@ -1,12 +1,12 @@
-`Georules`
+`GeorulesLobePy`
 
-# GeoRules
+# GeorulesLobePy
 To run the main code run: 
-1. Activate the `georules` environment
+1. Activate the `georuleslobepy` environment
 ```bash
-conda activate georules
+conda activate georuleslobepy
 ```
-2. Run the main notebook: georules/notebooks/Results_Visualizations.ipynb
+2. Run the main notebook: georuleslobepy/notebooks/Results_Visualizations.ipynb
 3. Run the main:
 ```bash
 main.py
@@ -14,7 +14,7 @@ main.py
 
 
 ### Developer Quick Start
-GeoRules uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the Conda documentation.  
+GeorulesLobePy uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the Conda documentation.  
 - [Managing Conda environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)
 - [Conda installation guide](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#)
 
@@ -27,14 +27,14 @@ To set up the environment from scratch, perform the following commands in the pr
 4. Install local project code: 
 ```bash
 # run these commands in the project root
-conda create -n georules python=3.11 # Step 1: create new georules env
-conda activate georules # Step 2: activate georules env
+conda create -n georuleslobepy python=3.11 # Step 1: create new georuleslobepy env
+conda activate georuleslobepy # Step 2: activate georuleslobepy env
 pip install -r requirements.txt # Step 3: install PIP dependencies
 pip install -e . # Step 4: install local project code with PIP 
 ```
 
 **WARNING:** If the requirements change (i.e., in the requirements.txt) you should rebuild the environment from scratch.  
-To delete the existing `georules` environment run: 
+To delete the existing `georuleslobepy` environment run: 
 ```bash
-conda remove --name georules --all # remove georules env
+conda remove --name georuleslobepy --all # remove georuleslobepy env
 ```
