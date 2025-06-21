@@ -10,7 +10,7 @@ conda activate georuleslobepy
 ``` bash
 notebooks/Results_Visualizations.ipynb
 ```
-4. Run the main:
+3. Run the main:
 ```bash
 main.py
 ```  
