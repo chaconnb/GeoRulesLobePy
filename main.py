@@ -72,13 +72,13 @@ for i in range (0, num_reals):
            
     
     
-    # # ## Create 3D Grid  
+    #### Create 3D Grid  
     
     nz = math.ceil(np.max(Bathymetry_maps[len(Bathymetry_maps)-1])) + 5 #Find maximum height 
     sandbox_grid = sandbox(lenght[0],wmax[0],cellsize[0],lobe_image,cellsize_z[0],tmax[0],gp[0],mud_property[0],
     n_mud[0],a1[0],a2[0],nx[0],ny[0],nz,lobes[0],angle_stack,columns_corner,rows_corner,Bathymetry_maps,quadrants)
 
-    # # # Visualize 
+    ### Visualize 
     grid(sandbox_grid,1,1,1,plot_slices=True, slice_x=40, slice_y=30, slice_z=2) #change depending on desired type of visualization 
     
     
