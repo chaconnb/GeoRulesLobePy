@@ -7,9 +7,9 @@ Created on Fri Nov  3 13:23:34 2023
 import numpy as np
 import math
 
-from georules.S_lobe_facies import grid_lobe
-from georules.S_RotateCoord import rotate_coord
-from georules.S_Lobegeom import drop_geometry
+from georuleslobepy.S_lobe_facies import grid_lobe
+from georuleslobepy.S_RotateCoord import rotate_coord
+from georuleslobepy.S_Lobegeom import drop_geometry
 
 
 ### inputs

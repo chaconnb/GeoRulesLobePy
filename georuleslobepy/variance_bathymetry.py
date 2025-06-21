@@ -1,8 +1,5 @@
 import numpy as np
 
-
-
-
 def varinace_bathymetry_maps(Bathymetry_maps):
     """Calculate Variance of thicknesses in bathymetry maps
        

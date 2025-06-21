@@ -4,8 +4,6 @@
 
 """
 
-
-
 from scipy.stats import multinomial
 from typing import List, Tuple 
 import numpy as np

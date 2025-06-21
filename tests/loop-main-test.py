@@ -6,7 +6,7 @@ n_failed_test = 0
 for test in range(n_tests): 
     print(test)
     try:
-        cmd = "python georules/M_LRBM.py".split() 
+        cmd = "python georuleslobepy/M_LRBM.py".split() 
         subprocess.check_call(cmd)
         
     except: 
