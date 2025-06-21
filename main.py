@@ -7,11 +7,11 @@ Created on Tue Apr 25 14:50:19 2023
 
 # visualization
 
-from georules.S_ProbMap import Lobe_map
-from georules.variance_bathymetry import varinace_bathymetry_maps
-from georules.utils import save_bath_as_array
-from georules.S_3Dgrid_healing import sandbox
-from georules.visualization.V_grid import grid
+from georuleslobepy.S_ProbMap import Lobe_map
+from georuleslobepy.variance_bathymetry import varinace_bathymetry_maps
+from georuleslobepy.utils import save_bath_as_array
+from georuleslobepy.S_3Dgrid_healing import sandbox
+from georuleslobepy.visualization.V_grid import grid
 import numpy as np
 import math 
 
