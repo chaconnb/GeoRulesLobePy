@@ -1,7 +1,7 @@
 numpy
 scipy
 matplotlib
-pyvista==0.43.1
+pyvista==0.45.2
 ipykernel # used for interactive mode in VSCode
 jupyterlab>=3
 ipywidgets 
