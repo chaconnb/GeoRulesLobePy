@@ -8,7 +8,7 @@ conda activate georuleslobepy
 ```
 2. Run the main notebook:
 ``` bash
-    GeoRulesLobePy/notebooks/Results_Visualizations.ipynb
+notebooks/Results_Visualizations.ipynb
 ```
 4. Run the main:
 ```bash
