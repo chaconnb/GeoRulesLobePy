@@ -42,7 +42,7 @@ To delete the existing `georuleslobepy` environment run:
 conda remove --name georuleslobepy --all # remove georuleslobepy env
 ```
 
-## Acknowledgments
+#### Acknowledgments
 
 Special thanks to Daniel Willhelm for help with code refactoring.
 
