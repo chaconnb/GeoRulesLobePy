@@ -6,8 +6,11 @@ To run the main code run:
 ```bash
 conda activate georuleslobepy
 ```
-2. Run the main notebook: georuleslobepy/notebooks/Results_Visualizations.ipynb
-3. Run the main:
+2. Run the main notebook:
+``` bash
+    GeoRulesLobePy/notebooks/Results_Visualizations.ipynb
+```
+4. Run the main:
 ```bash
 main.py
 ```  
