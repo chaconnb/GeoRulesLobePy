@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-PACKAGE_NAME = "georules"
+PACKAGE_NAME = "georuleslobepy"
 PACKAGE_DIRS = [PACKAGE_NAME]
 VERSION = None
 # RUNTIME_DEPS = None
