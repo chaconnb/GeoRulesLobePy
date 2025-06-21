@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "georuleslobepy"
+version = "0.0.1"
+description = "Python package for rule-based geologic lobe models"
+authors = [{ name = "Nataly Chacon", email = "nchaconb.email@utexas.edu" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+  "pyvista[all,trame]==0.45.2",
+  "ipykernel",
+  "jupyterlab>=3",
+  "ipywidgets"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
