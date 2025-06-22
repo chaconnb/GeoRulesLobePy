@@ -1,6 +1,8 @@
-`GeorulesLobePy`
 
 # GeorulesLobePy
+[![DOI](https://zenodo.org/badge/723123162.svg)](https://doi.org/10.5281/zenodo.15717349)
+
+
 To run the main code run: 
 1. Activate the `georuleslobepy` environment
 ```bash
@@ -45,7 +47,7 @@ To delete the existing `georuleslobepy` environment run:
 conda remove --name georuleslobepy --all # remove georuleslobepy env
 ```
 
-#### Acknowledgments
+### Acknowledgments
 
 Special thanks to Dr. Daniel Willhelm for help with code refactoring.
 
