@@ -4,36 +4,32 @@
 
 
 To run the main code run: 
-1. Activate the `georuleslobepy` environment
-```bash
-conda activate georuleslobepy
-```
+1. Start by following the steps of the `Developer Quick Start Section`
+**Note:** If you've already installed the package in editable mode, you can skip that step.
 2. Run the main notebook:
 ``` bash
-notebooks/Results_Visualizations.ipynb
+notebooks/main_notebook.ipynb
 ```
-3. Run the main:
+or run the main script:
 ```bash
 main.py
 ```  
-
-
 ### Developer Quick Start
 GeorulesLobePy uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the Conda documentation.  
 - [Managing Conda environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)
 - [Conda installation guide](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#)
 
-#### Installation
-To set up the environment from scratch and install the package along with all required dependencies, follow these steps:
- 
+#### Python Environment
+To set up the environment from scratch, perform the following commands in the project root. 
+
+1. Create a new conda environment
+2. Active the environment
+3. Install the package in editable mode.
 ```bash
 # run these commands in the project root
-# Step 1: Create a new conda environment with Python 3.11
-conda create -n georuleslobepy python=3.11
-# Step 2: Activate the environment
-conda activate georuleslobepy
-# Step 3: Install the package in editable mode (installs all dependencies listed in pyproject.toml)
-pip install -e .
+conda create -n georuleslobepy python=3.11 # Step 1: create new georuleslobepy env
+conda activate georuleslobepy # Step 2: activate georuleslobepy env
+pip install -e . # Step 4: install local project code with PIP 
 ```
 This will: 
 - Install the `georuleslobepy` package in editable mode, allowing you to modify the code without reinstallation

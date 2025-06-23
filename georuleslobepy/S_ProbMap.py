@@ -275,7 +275,6 @@ def Lobe_map(
         Bathymetry_steprobability_maps = bathymetry.layers.copy()
         
         n = n+1 
-        #print(n) #track progress
         
         # prepare output
         output = (

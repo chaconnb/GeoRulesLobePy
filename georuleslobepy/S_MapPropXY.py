@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 16 22:06:17 2023
 
 @author: Nataly Chacon-Buitrago 
-This function builds the facies trend in the XY axis. Best quality in the axis. 
+
 """
 
 import numpy as np
@@ -13,17 +12,33 @@ from georuleslobepy.S_PasteArray import paste
 from georuleslobepy.S_nonzero_one import convert_nonzero_to_one
 
 
-#length = Value_4_lenght[0]
-#wmax = Value_2_wmax[0]
-#cell_size = Value_6_cellsize[0]
-#a1 = Value_13_a1[0]
-#a2 = Value_14_a2[0]
-#y_interval = 100
-
-
-
-
 def PropXY(length,wmax,cell_size,a1,a2):
+
+    """
+    Generates a 2D facies trend array along the XY plane based on lobe geometry.
+
+    This function builds the spatial trend of facies quality in the horizontal (XY) direction. 
+    It assumes the best facies quality occurs near specific relative positions determined by `a1` and `a2`.
+
+    Parameters
+    ----------
+    length : int
+        Total length of the lobe.
+    wmax : int
+        Maximum width of the lobe.
+    cell_size : float
+        Size of each grid cell (assumed equal in x and y directions).
+    a1 : float
+        Relative position along the lobe length where the maximum width occurs (e.g., 0.66).
+    a2 : float
+        Relative position along the lobe length where the maximum thickness occurs (e.g., 0.33).
+
+    Returns
+    -------
+    lobe_XY_norm : ndarray
+        2D array representing facies trend in XY.
+
+    """
     
     wmax_list =  [i for i in range(cell_size*2,wmax, cell_size)]
     lenght_list =  [i for i in range(int(length/len(wmax_list)),length,int(length/len(wmax_list )))]

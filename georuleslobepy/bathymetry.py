@@ -49,8 +49,6 @@ def varinace_bathymetry_maps(Bathymetry_maps):
             
 
     """ 
-
-
     variance_bathymetry = []
     
     for _map in Bathymetry_maps:

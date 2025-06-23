@@ -1,7 +1,9 @@
 import numpy as np
 
 def varinace_bathymetry_maps(Bathymetry_maps):
-    """Calculate Variance of thicknesses in bathymetry maps
+
+    """
+       Calculate Variance of thicknesses in bathymetry maps
        
        Parameters
        ----------  
@@ -13,9 +15,7 @@ def varinace_bathymetry_maps(Bathymetry_maps):
        variance_bathymetry: arrays
        array with the variance of the thicknesses of each bathymetry map. 
             
-
     """ 
-
 
     variance_bathymetry = []
     
@@ -31,5 +31,4 @@ def varinace_bathymetry_maps(Bathymetry_maps):
         variance_bathymetry.append(variance_array)
         
     # Convert the list to a NumPy array
-    
     return(np.array(variance_bathymetry)) 
