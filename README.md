@@ -1,4 +1,5 @@
 `GeorulesLobePy`
+[![DOI](https://zenodo.org/badge/723123162.svg)](https://doi.org/10.5281/zenodo.15717349)
 
 # GeorulesLobePy
 To run the main code run: 
@@ -12,8 +13,6 @@ or run the main script:
 ```bash
 main.py
 ```  
-
-
 ### Developer Quick Start
 GeorulesLobePy uses Conda to manage the Python environment. External libraries are installed using PIP. Please refer to the Conda documentation.  
 - [Managing Conda environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)
