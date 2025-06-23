@@ -63,10 +63,7 @@ def  drop_geometry(wmax,lenght,tmax,x,y_interval, a1 =0.66, a2 =0.33):
     
     for i in range(len(x)):
     
-        y = [i for i in range(0,int(np.round(2*w_x_[i])),y_interval)]
-    
-      
-       
+        y = [i for i in range(0,int(np.round(2*w_x_[i])),y_interval)]       
         ty = []
         
         if w_x_[i] != 0:
