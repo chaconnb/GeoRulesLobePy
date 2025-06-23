@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Chacon-Buitrago"
+    given-names: "Nataly"
+    orcid: "https://orcid.org/0009-0003-0124-9182"
+  - family-names: "Willhelm"
+    given-names: "Daniel"
+    orcid: "https://orcid.org/0000-0002-9365-0744"
+title: "GeoRulesLobePy"
+version: 0.1.1
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.15717350
+date-released: 2025-06-22
