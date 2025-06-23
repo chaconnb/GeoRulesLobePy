@@ -1,3 +1,8 @@
+"""
+@author:Nataly Chacon-Buitrago
+
+"""
+
 import numpy as np
 import math 
 

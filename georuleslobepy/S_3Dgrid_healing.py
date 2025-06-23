@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov  3 13:23:34 2023
 
 @author: Nataly Chacon-Buitrago
+@refactoring:Daniel Willhelm
+
 """
 import numpy as np
 import math
@@ -11,21 +12,6 @@ from georuleslobepy.S_lobe_facies import grid_lobe
 from georuleslobepy.S_RotateCoord import rotate_coord
 from georuleslobepy.S_Lobegeom import drop_geometry
 
-
-### inputs
-# lobe_length = Value_4_lenght[0]
-# cell_size = Value_6_cellsize[0]
-# lobe_wmax = Value_2_wmax[0]
-# cellsize_z = Value_19_cellsize_z[0]
-# lobe_tmax = Value_3_tmax[0]
-# global_prop = Value_15_gp[0]
-# mud_property = Value_21_mud_property[0]
-# n_cell_mud = Value_20_n_mud[0]
-# a1 = Value_13_a1[0]
-# a2 = Value_14_a2[0]
-# nx = 100
-# ny = 100
-# n_lobe = Value_5_lobes[0]
 
 
 def get_standard_lobe_coordinates(lobe_length:float, lobe_wmax:float, cell_size:float) -> np.ndarray:
@@ -95,7 +81,7 @@ def get_initial_sandbox(sandbox_grid, cellsize_z, lobe_tmax, nx, ny, grid_lobe_n
     y_nc_udr = math.floor(new_coord[i][1])
                 
                     
-    if verify_range(x_nc_ur, y_nc_ur, x_nc_udr, y_nc_udr, nx, ny): #### esto se puede cambiar!!!!!
+    if verify_range(x_nc_ur, y_nc_ur, x_nc_udr, y_nc_udr, nx, ny): 
         for k in range(int(lobe_tmax/cellsize_z)):
             if sandbox_grid[y_nc_ur,x_nc_ur,k] == 0:
                 sandbox_grid[y_nc_ur,x_nc_ur,k] =  grid_lobe_normal_mud[x_c,y_c,k]
@@ -291,8 +277,6 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
        3D grid of lobes with facies.
    """
    
-   
-
     #Find coordinates of standard lobe in grid system
     coord = get_standard_lobe_coordinates(lobe_length, lobe_wmax, cell_size)
     
@@ -330,9 +314,7 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                 cell_num, sandbox_grid = add_mud_layer(n, cellsize_z, mud_property, nx, ny, 
                                         Bathymetry_maps, sandbox_grid, nz_values
                 )
-                # NOTE: It looks like you do not use `cell_num` any where in the code 
-                # after you create it - why do you have it? 
-        
+               
             else: 
                 print("lobe",n)
                 
@@ -352,7 +334,6 @@ def sandbox(lobe_length,lobe_wmax,cell_size,lobe_image,cellsize_z,lobe_tmax,
                     nx, ny, coord, new_coord
                 )
                 
-                ###create array to verify which coordinates have been filled out
                 fill_out_array = np.zeros((nx,ny))
                 
                 for i in range(len(verify_range_coord)):

@@ -1,39 +1,49 @@
 # -*- coding: utf-8 -*-
 """
 
-@author: Nataly Chacon-Buitrago
-New lobe geometry - output array with coordinates x,y and thickness of the lobe
-Equations are taken from Zhang et al. 2009. Equation to find w_x_was modified. 
-inputs: 
-    wmax = maximum lobe width int
-    length = maximum lobe length int
-    tmax = maximum thickness int
-    x = list with the coordinates we want to calculate thickness in x (lenght parameter)
-    y_interval = interval of y
-    a1 = Relative position of maximum width.
-    a2 = Relative position of maximum thickness.
-    Default a1 = 0.66 and a2 = 0.33 -> if this changes  S_RotatePaste has to change, becuase centroid location will change!
-    
-output:
-    lobe_thick = array size (wmax/interval_size_x ) x (lenght/y_interval)
-                             
+@author: Nataly Chacon-Buitrago  
+
 """
 
 import numpy as np
 import math
 
 
-#Example input: 
-# a1 = 0.66
-# a2 = 0.33
-# wmax = 16000 #m 
-# lenght = 30000 #m
-# tmax = 2 #m
-# x = [i for i in range(0,lenght, 100)]
-# y_interval = 100
-
 def  drop_geometry(wmax,lenght,tmax,x,y_interval, a1 =0.66, a2 =0.33):
 
+    """
+    Generates a new lobe geometry array with x, y coordinates and corresponding thickness values.
+
+    This function creates a 2D representation of a lobe's thickness distribution using equations 
+    from Zhang et al. (2009), with a modification to the equation used for calculating the width (w_x).
+    
+    Parameters
+    ----------
+    wmax : int
+        Maximum width of the lobe.
+    length : int
+        Maximum length of the lobe.
+    tmax : int
+        Maximum thickness of the lobe.
+    x : list or ndarray
+        List of x-coordinates at which to compute lobe thickness (length-wise).
+    y_interval : float
+        Spatial resolution or interval along the y-direction.
+    a1 : float, optional
+        Relative position along the length where the maximum width occurs. Default is 0.66.
+    a2 : float, optional
+        Relative position along the length where the maximum thickness occurs. Default is 0.33.
+
+    Returns
+    -------
+    lobe_thick : ndarray
+        2D array representing thickness values.
+
+    Notes
+    -----
+    - Changing the values of `a1` and `a2` affects the centroid of the lobe geometry. If modified, 
+      the `S_RotatePaste` function must also be updated to ensure consistent spatial alignment.
+    """
     
     b1 = -np.log(2)/np.log(1-a1)
     
@@ -107,36 +117,7 @@ def  drop_geometry(wmax,lenght,tmax,x,y_interval, a1 =0.66, a2 =0.33):
          
     return(lobe_thick)
 
-# =============================================================================
-#  Useful plots: 
-#     
-# #Plot lobe_thick in 2D
-# # fig = plt.figure()
-# # ax = fig.add_subplot(111)
-# # plt.imshow(lobe_thick)
-# # plt.show()
-# 
-# 
-# 
-# #Plot lobe_thick in 3D
-# 
-# # generate meshgrid for plot
-# # xax = np.arange(0, wmax/y_interval)
-# # yax = np.arange(0, lenght/y_interval)
-# # xax, yax = np.meshgrid(yax, xax)
-# 
-# 
-# # # plot and save
-# # fig = plt.figure()
-# # ax = fig.add_subplot(1,1,1, projection ='3d')
-# # #ax = fig.gca(projection='3d')
-# # surf = ax.plot_surface(xax, yax, lobe_thick, cmap = 'viridis')
-# # ax.set_box_aspect([30,15,2])  
-# # ax.view_init(25,180)
-# # plt.show()
-# 
-# 
-# =============================================================================
+
 
 
 
