@@ -1,7 +1,5 @@
 """
-
 @author: Daniel Willhelm
-
 """
 
 from scipy.stats import multinomial

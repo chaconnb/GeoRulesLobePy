@@ -65,9 +65,6 @@ def stacking(
         
     return lobe_location, centroid_probability_map 
     
-   
-
-
 def get_circle_mask(nx, ny, centroid, rad_int):
     "Mask from the centroid to the radius (rad_int) in every direction."
     

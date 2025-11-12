@@ -2,32 +2,56 @@
 """
 
 @author: Nataly Chacon-Buitrago
-
-Function to rasterize input properties and mud top of single lobe. 
-    
-return:
-    lobe_grid = 3d array with lobe and lobe properties    
+  
 """
 import numpy as np
 
 from georuleslobepy.S_MapPropXY import PropXY
 from georuleslobepy.S_MapPropZX import PropXZ
 
-###Input example:
-#lobe_thi = lobe_image
-#length = Value_4_lenght[0]
-#wmax = Value_2_wmax[0]
-#cellsize_z = Value_19_cellsize_z[0]
-#cell_size = Value_6_cellsize[0]
-#tmax = 2 #m
-#global_property = 0.15 #global percentage of the property
-#mud_prop = 0.10
-#n_cell_mud = 2
-#a1 =  Value_13_a1[0]
-#a2 = Value_14_a2[0]
-
 
 def grid_lobe(lobe_thi,length,wmax,cellsize_z,cell_size,tmax,global_property,mud_prop,n_cell_mud,mud_layer,a1,a2):
+
+    """
+    Rasterizes lobe thickness and property trends into a 3D grid, including mud layers on top.
+
+    This function generates a 3D grid representation of a single lobe, incorporating facies properties, 
+    vertical resolution, and mud deposition. It converts the thickness and property maps into 
+    a voxel-based volume.
+
+    Parameters
+    ----------
+    lobe_thi : ndarray
+        2D array of lobe thickness values (XY plane).
+    length : int
+        Maximum lobe length in meters.
+    wmax : int
+        Maximum lobe width in meters.
+    cellsize_z : float
+        Vertical resolution (grid cell size along the Z-axis).
+    cell_size : float
+        Horizontal resolution (grid cell size in both X and Y directions).
+    tmax : int
+        Maximum lobe thickness in meters.
+    global_property : float
+        Target global proportion of the modeled facies (as a decimal, e.g., 0.6 for 60%).
+    mud_prop : float
+        Proportion of mud facies within the mud layer.
+    n_cell_mud : int
+        Number of vertical mud cells to place on top of each lobe element.
+    mud_layer : bool
+        Whether to include a mud layer on top of the lobe (True or False).
+    a1 : float
+        Relative position of maximum lobe width along the length (used for facies trend alignment).
+    a2 : float
+        Relative position of maximum lobe thickness along the length (used for facies trend alignment).
+
+    Returns
+    -------
+    lobe_grid : ndarray
+        3D array representing the voxelized lobe with assigned facies properties and mud layers.
+
+    """
     
     ## Find max value of thickness
     max_element = np.max(lobe_thi)

@@ -1,5 +1,5 @@
 ## Transition Matrices
-File with the transtions matrices for different simulations.
+File with the transtions matrices for different simulations. This transition matrices where used in the paper `GeoRulesLobePy: A Markov Chain-Based Approach for Rule-Based Deepwater Lobe Training Images in Subsurface Modeling`.
 
 ### Some definitions
 Q1, Q2, Q3, and Q4 refer to the quadrants where the lobe moves. The quadrants are determined by the angles within each quadrant. \

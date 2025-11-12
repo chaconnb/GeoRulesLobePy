@@ -2,19 +2,38 @@
 """
 
 @author: Nataly Chacon-Buitrago
-This function builds the facies trend in the XZ axis. Best quality - rocks below. 
+
 """
 import numpy as np
 
-#example input
-#cellsize_z = Value_19_cellsize_z[0]
-#tmax = 2 #m
-#length = Value_4_lenght[0]
-#cell_size = Value_6_cellsize[0]
-
-
 
 def PropXZ(cellsize_z,tmax,length,cell_size): 
+
+    """
+    Builds a 2D facies trend array in the XZ (length–thickness) plane.
+
+    This function generates a facies quality distribution along the X (length) and Z (thickness) 
+    directions of the lobe. The trend typically assumes that the best facies quality is centered 
+    in the middle of the lobe thickness and length.
+
+    Parameters
+    ----------
+    cellsize_z : float
+        Vertical resolution (cell size in the Z direction).
+    tmax : int
+        Maximum thickness of the lobe (in meters).
+    length : int
+        Total length of the lobe (in meters).
+    cell_size : float
+        Horizontal resolution (cell size in the X direction).
+
+    Returns
+    -------
+    p : ndarray
+        2D array representing facies trend 
+        in the XZ plane.
+
+    """
 
     #z-axis
     #create list of z values:
