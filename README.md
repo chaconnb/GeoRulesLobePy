@@ -45,5 +45,5 @@ conda remove --name georuleslobepy --all # remove georuleslobepy env
 
 ### Acknowledgments
 
-Special thanks to Dr. Daniel Willhelm for help with code refactoring.
+Special thanks to Dr. Daniel Willhelm for help with cleaning the code.
 
